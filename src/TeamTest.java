@@ -12,9 +12,10 @@ public class TeamTest {
     @Test
     public void canDraftHitter_returnsTrueWhenHitterPositionsAvailable() {
         List<Player> players = new ArrayList<>();
-        players.add(new Pitcher("1", "team"));
+        Hitter hitter = new Hitter("1", "team", "pos", 0.5, 1, 1, 1);
+        players.add(hitter);
         Team team = new Team(players);
-        assertTrue(team.canDraftHitter());
+        assertTrue(team.canDraftHitter(hitter));
     }
 
     @Test

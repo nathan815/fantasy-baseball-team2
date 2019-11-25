@@ -24,8 +24,7 @@ public class Team {
     // Returns true if a given hitter's position is available, false otherwise
     private boolean isHitterPositionAvailable(Hitter hitter) {
         for(Hitter otherHitter : getHitters()) {
-            // TODO use the Hitter's position name here once data PR is merged
-            if(otherHitter.getPlayerName().equals(hitter.getPlayerName())) {
+            if(otherHitter.getPosition().equals(hitter.getPosition())) {
                 return false;
             }
         }
@@ -38,19 +37,21 @@ public class Team {
 
     public void draftHitter(Hitter hitter) {
         if (!canDraftHitter(hitter)) {
-            throw new RuntimeException("Hitter position " + hitter + " is filled.");
+            throw new RuntimeException("Hitter position " + hitter.getPosition() + " is filled.");
         }
+        hitter.setDrafted();
         players.add(hitter);
     }
 
     public boolean canDraftPitcher() {
-        return getPitchers().size() < MAX_HITTERS;
+        return getPitchers().size() < MAX_PITCHERS;
     }
 
     public void draftPitcher(Pitcher pitcher) {
         if (!canDraftPitcher()) {
             throw new RuntimeException("All pitcher positions filled.");
         }
+        pitcher.setDrafted();
         players.add(pitcher);
     }
 
