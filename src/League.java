@@ -1,3 +1,164 @@
+import com.google.gson.stream.JsonReader;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 public class League {
-    // will contain most of the logic
+    private List<Hitter> hitters;
+    private List<Pitcher> pitchers;
+
+    public League() {
+        makeHitters();
+        makePitchers();
+    }
+
+    private void setHitters(List<Hitter> hitters) {
+        this.hitters = hitters;
+    }
+
+    private List<Hitter> getHitters() {
+        return hitters;
+    }
+
+    private void setPitchers(List<Pitcher> pitchers) {
+        this.pitchers = pitchers;
+    }
+
+    private List<Pitcher> getPitchers() {
+        return pitchers;
+    }
+
+    private void makePitchers() {
+        try {
+            InputStream reader = this.getClass().getResourceAsStream("pitchers.json");
+            JsonReader jReader = new JsonReader(new InputStreamReader(reader, "UTF-8"));
+            try {
+                setPitchers(readPitchersArray(jReader));
+            } finally {
+                jReader.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<Pitcher> readPitchersArray(JsonReader reader) throws IOException {
+        List<Pitcher> pitchers = new ArrayList<>();
+        reader.beginArray();
+        while (reader.hasNext()) {
+            pitchers.add(readPitcher(reader));
+        }
+        reader.endArray();
+        return pitchers;
+    }
+
+    private Pitcher readPitcher(JsonReader reader) throws IOException {
+        String name = null;
+        String team = null;
+        double era = 0.0;
+        int strikeOuts = 0;
+        int hitsAllowed = 0;
+        int runsAllowed = 0;
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String data = reader.nextName();
+            switch (data) {
+                case "name_display_first_last":
+                    name = reader.nextString();
+                    break;
+                case "team_abbrev":
+                    team = reader.nextString();
+                    break;
+                case "era":
+                    era = Double.parseDouble(reader.nextString());
+                    break;
+                case "so":
+                    strikeOuts = Integer.parseInt(reader.nextString());
+                    break;
+                case "h":
+                    hitsAllowed = Integer.parseInt(reader.nextString());
+                    break;
+                case "r":
+                    runsAllowed = Integer.parseInt(reader.nextString());
+                    break;
+                default:
+                    reader.skipValue();
+                    break;
+            }
+        }
+        reader.endObject();
+        return new Pitcher(name, team, era, strikeOuts, hitsAllowed, runsAllowed);
+    }
+
+    private void makeHitters() {
+        try {
+            InputStream reader = this.getClass().getResourceAsStream("hitters.json");
+            JsonReader jReader = new JsonReader(new InputStreamReader(reader, "UTF-8"));
+            try {
+                setHitters(readHittersArray(jReader));
+            } finally {
+                jReader.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<Hitter> readHittersArray(JsonReader reader) throws IOException {
+        List<Hitter> hitters = new ArrayList<>();
+        reader.beginArray();
+        while (reader.hasNext()) {
+            hitters.add(readHitter(reader));
+        }
+        reader.endArray();
+        return hitters;
+    }
+
+
+    private Hitter readHitter(JsonReader reader) throws IOException {
+        String name = null;
+        String team = null;
+        String position = null;
+        double avg = 0.0;
+        int hits = 0;
+        int runs = 0;
+        int rbis = 0;
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String data = reader.nextName();
+            switch (data) {
+                case "name_display_first_last":
+                    name = reader.nextString();
+                    break;
+                case "team_abbrev":
+                    team = reader.nextString();
+                    break;
+                case "pos":
+                    position = reader.nextString();
+                    break;
+                case "avg":
+                    avg = Double.parseDouble(reader.nextString());
+                    break;
+                case "h":
+                    hits = Integer.parseInt(reader.nextString());
+                    break;
+                case "r":
+                    runs = Integer.parseInt(reader.nextString());
+                    break;
+                case "rbi":
+                    rbis = Integer.parseInt(reader.nextString());
+                    break;
+                default:
+                    reader.skipValue();
+                    break;
+            }
+        }
+        reader.endObject();
+        return new Hitter(name, team, position, avg, hits, runs, rbis);
+    }
 }
