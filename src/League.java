@@ -1,35 +1,34 @@
-import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 public class League {
-    private ArrayList<Object> hitters;
-    private ArrayList<Object> pitchers;
+    private List<Hitter> hitters;
+    private List<Pitcher> pitchers;
 
     public League() {
         makeHitters();
         makePitchers();
-        System.out.println("Made it here");
+            System.out.println("Made it here");
     }
 
-    private void setHitters(ArrayList<Object> hitters) {
+    private void setHitters(List<Hitter> hitters) {
         this.hitters = hitters;
     }
 
-    private ArrayList<Object> getHitters() {
+    private List<Hitter> getHitters() {
         return hitters;
     }
 
-    private void setPitchers(ArrayList<Object> pitchers) {
+    private void setPitchers(List<Pitcher> pitchers) {
         this.pitchers = pitchers;
     }
 
-    private ArrayList<Object> getPitchers() {
+    private List<Pitcher> getPitchers() {
         return pitchers;
     }
 
@@ -47,8 +46,8 @@ public class League {
         }
     }
 
-    private ArrayList<Object> readPitchersArray(JsonReader reader) throws IOException {
-        ArrayList<Object> pitchers = new ArrayList<>();
+    private List<Pitcher> readPitchersArray(JsonReader reader) throws IOException {
+        List<Pitcher> pitchers = new ArrayList<>();
         reader.beginArray();
         while(reader.hasNext()){
             pitchers.add(readPitcher(reader));
@@ -57,7 +56,7 @@ public class League {
         return pitchers;
     }
 
-    private Object readPitcher(JsonReader reader) throws IOException{
+    private Pitcher readPitcher(JsonReader reader) throws IOException{
         String name = null;
         String team = null;
         String era = null;
@@ -110,8 +109,8 @@ public class League {
         }
     }
 
-    private ArrayList<Object> readHittersArray(JsonReader reader) throws IOException {
-        ArrayList<Object> hitters = new ArrayList<>();
+    private List<Hitter> readHittersArray(JsonReader reader) throws IOException {
+        List<Hitter> hitters = new ArrayList<>();
         reader.beginArray();
         while(reader.hasNext()){
             hitters.add(readHitter(reader));
@@ -121,7 +120,7 @@ public class League {
     }
 
 
-    private Object readHitter(JsonReader reader) throws IOException{
+    private Hitter readHitter(JsonReader reader) throws IOException{
         String name = null;
         String team = null;
         String position = null;
