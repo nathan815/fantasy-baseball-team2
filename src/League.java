@@ -13,7 +13,6 @@ public class League {
     public League() {
         makeHitters();
         makePitchers();
-            System.out.println("Made it here");
     }
 
     private void setHitters(List<Hitter> hitters) {
@@ -32,7 +31,7 @@ public class League {
         return pitchers;
     }
 
-    private void makePitchers(){
+    private void makePitchers() {
         try {
             InputStream reader = this.getClass().getResourceAsStream("pitchers.json");
             JsonReader jReader = new JsonReader(new InputStreamReader(reader, "UTF-8"));
@@ -49,23 +48,23 @@ public class League {
     private List<Pitcher> readPitchersArray(JsonReader reader) throws IOException {
         List<Pitcher> pitchers = new ArrayList<>();
         reader.beginArray();
-        while(reader.hasNext()){
+        while (reader.hasNext()) {
             pitchers.add(readPitcher(reader));
         }
         reader.endArray();
         return pitchers;
     }
 
-    private Pitcher readPitcher(JsonReader reader) throws IOException{
+    private Pitcher readPitcher(JsonReader reader) throws IOException {
         String name = null;
         String team = null;
-        String era = null;
-        String strikeOuts = null;
-        String hitsAllowed = null;
-        String runsAllowed = null;
+        double era = 0.0;
+        int strikeOuts = 0;
+        int hitsAllowed = 0;
+        int runsAllowed = 0;
 
         reader.beginObject();
-        while(reader.hasNext()){
+        while (reader.hasNext()) {
             String data = reader.nextName();
             switch (data) {
                 case "name_display_first_last":
@@ -75,16 +74,16 @@ public class League {
                     team = reader.nextString();
                     break;
                 case "era":
-                    era = reader.nextString();
+                    era = Double.parseDouble(reader.nextString());
                     break;
                 case "so":
-                    strikeOuts = reader.nextString();
+                    strikeOuts = Integer.parseInt(reader.nextString());
                     break;
                 case "h":
-                    hitsAllowed = reader.nextString();
+                    hitsAllowed = Integer.parseInt(reader.nextString());
                     break;
                 case "r":
-                    runsAllowed = reader.nextString();
+                    runsAllowed = Integer.parseInt(reader.nextString());
                     break;
                 default:
                     reader.skipValue();
@@ -112,7 +111,7 @@ public class League {
     private List<Hitter> readHittersArray(JsonReader reader) throws IOException {
         List<Hitter> hitters = new ArrayList<>();
         reader.beginArray();
-        while(reader.hasNext()){
+        while (reader.hasNext()) {
             hitters.add(readHitter(reader));
         }
         reader.endArray();
@@ -120,17 +119,17 @@ public class League {
     }
 
 
-    private Hitter readHitter(JsonReader reader) throws IOException{
+    private Hitter readHitter(JsonReader reader) throws IOException {
         String name = null;
         String team = null;
         String position = null;
-        String avg = null;
-        String hits = null;
-        String runs = null;
-        String rbis = null;
+        double avg = 0.0;
+        int hits = 0;
+        int runs = 0;
+        int rbis = 0;
 
         reader.beginObject();
-        while(reader.hasNext()){
+        while (reader.hasNext()) {
             String data = reader.nextName();
             switch (data) {
                 case "name_display_first_last":
@@ -143,16 +142,16 @@ public class League {
                     position = reader.nextString();
                     break;
                 case "avg":
-                    avg = reader.nextString();
+                    avg = Double.parseDouble(reader.nextString());
                     break;
                 case "h":
-                    hits = reader.nextString();
+                    hits = Integer.parseInt(reader.nextString());
                     break;
                 case "r":
-                    runs = reader.nextString();
+                    runs = Integer.parseInt(reader.nextString());
                     break;
                 case "rbi":
-                    rbis = reader.nextString();
+                    rbis = Integer.parseInt(reader.nextString());
                     break;
                 default:
                     reader.skipValue();

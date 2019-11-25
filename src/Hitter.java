@@ -1,11 +1,11 @@
 public class Hitter extends Player {
     private String position;
-    private String avg;
-    private String hits;
-    private String runs;
-    private String rbis;
+    private double avg;
+    private int hits;
+    private int runs;
+    private int rbis;
 
-    public Hitter(String name, String team, String position, String avg, String hits, String runs, String rbis){
+    public Hitter(String name, String team, String position, double avg, int hits, int runs, int rbis) {
         super(name, team);
         this.position = position;
         this.avg = avg;
@@ -22,35 +22,35 @@ public class Hitter extends Player {
         this.position = position;
     }
 
-    public String getAvg() {
+    public double getAvg() {
         return avg;
     }
 
-    public void setAvg(String avg) {
+    public void setAvg(double avg) {
         this.avg = avg;
     }
 
-    public String getHits() {
+    public int getHits() {
         return hits;
     }
 
-    public void setHits(String hits) {
+    public void setHits(int hits) {
         this.hits = hits;
     }
 
-    public String getRuns() {
+    public int getRuns() {
         return runs;
     }
 
-    public void setRuns(String runs) {
+    public void setRuns(int runs) {
         this.runs = runs;
     }
 
-    public String getRbis() {
+    public int getRbis() {
         return rbis;
     }
 
-    public void setRbis(String rbis) {
+    public void setRbis(int rbis) {
         this.rbis = rbis;
     }
 }

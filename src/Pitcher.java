@@ -1,11 +1,11 @@
 public class Pitcher extends Player {
-    private String era;
-    private String strikeOuts;
-    private String hitsAllowed;
-    private String runsAllowed;
+    private double era;
+    private int strikeOuts;
+    private int hitsAllowed;
+    private int runsAllowed;
 
 
-    public Pitcher(String name, String team, String era, String strikeOuts, String hitsAllowed, String runsAllowed){
+    public Pitcher(String name, String team, double era, int strikeOuts, int hitsAllowed, int runsAllowed) {
         super(name, team);
         this.era = era;
         this.strikeOuts = strikeOuts;
@@ -13,35 +13,35 @@ public class Pitcher extends Player {
         this.runsAllowed = runsAllowed;
     }
 
-    public String getEra() {
+    public double getEra() {
         return era;
     }
 
-    public void setEra(String era) {
+    public void setEra(double era) {
         this.era = era;
     }
 
-    public String getStrikeOuts() {
+    public int getStrikeOuts() {
         return strikeOuts;
     }
 
-    public void setStrikeOuts(String strikeOuts) {
+    public void setStrikeOuts(int strikeOuts) {
         this.strikeOuts = strikeOuts;
     }
 
-    public String getHitsAllowed() {
+    public int getHitsAllowed() {
         return hitsAllowed;
     }
 
-    public void setHitsAllowed(String hitsAllowed) {
+    public void setHitsAllowed(int hitsAllowed) {
         this.hitsAllowed = hitsAllowed;
     }
 
-    public String getRunsAllowed() {
+    public int getRunsAllowed() {
         return runsAllowed;
     }
 
-    public void setRunsAllowed(String runsAllowed) {
+    public void setRunsAllowed(int runsAllowed) {
         this.runsAllowed = runsAllowed;
     }
 }
