@@ -40,7 +40,7 @@ public class League {
             InputStream reader = this.getClass().getResourceAsStream("pitchers.json");
             JsonReader jReader = new JsonReader(new InputStreamReader(reader, "UTF-8"));
             try {
-                setPitchers(readPitchersArray(jReader));
+                pitchers = readPitchersArray(jReader);
             } finally {
                 jReader.close();
             }
@@ -103,7 +103,7 @@ public class League {
             InputStream reader = this.getClass().getResourceAsStream("hitters.json");
             JsonReader jReader = new JsonReader(new InputStreamReader(reader, "UTF-8"));
             try {
-                setHitters(readHittersArray(jReader));
+                hitters = readHittersArray(jReader);
             } finally {
                 jReader.close();
             }
