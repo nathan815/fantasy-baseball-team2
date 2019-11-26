@@ -22,9 +22,9 @@ public class Team {
     }
 
     // Returns true if a given hitter's position is available, false otherwise
-    private boolean isHitterPositionAvailable(Hitter hitter) {
-        for(Hitter otherHitter : getHitters()) {
-            if(otherHitter.getPosition().equals(hitter.getPosition())) {
+    private boolean isHitterPositionAvailable(Hitter otherHitter) {
+        for(Hitter hitter : getHitters()) {
+            if(hitter.getPosition().equals(otherHitter.getPosition())) {
                 return false;
             }
         }
@@ -35,16 +35,16 @@ public class Team {
         return getHitters().size() < MAX_HITTERS && isHitterPositionAvailable(hitter);
     }
 
+    public boolean canDraftPitcher() {
+        return getPitchers().size() < MAX_PITCHERS;
+    }
+
     public void draftHitter(Hitter hitter) {
         if (!canDraftHitter(hitter)) {
             throw new RuntimeException("Hitter position " + hitter.getPosition() + " is filled.");
         }
         hitter.setDrafted();
         players.add(hitter);
-    }
-
-    public boolean canDraftPitcher() {
-        return getPitchers().size() < MAX_PITCHERS;
     }
 
     public void draftPitcher(Pitcher pitcher) {
