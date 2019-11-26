@@ -7,10 +7,10 @@ public class Team {
     private static final int MAX_PITCHERS = 5;
     private static final int MAX_PLAYERS = MAX_HITTERS + MAX_PITCHERS;
 
-    private char name;
+    private String name;
     private List<Player> players;
 
-    public Team(char name) {
+    public Team(String name) {
         this.name = name;
         this.players = new ArrayList<>();
     }
@@ -71,7 +71,7 @@ public class Team {
                 .collect(Collectors.toList());
     }
 
-    public char getName() {
+    public String getName() {
         return name;
     }
 }

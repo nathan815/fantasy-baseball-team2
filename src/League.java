@@ -12,10 +12,12 @@ import java.util.Map;
 public class League {
     private List<Hitter> hitters;
     private List<Pitcher> pitchers;
+
     private List<Team> teams = Arrays.asList(
-            new Team('A'), new Team('B'), new Team('C'), new Team('D')
+            new Team("A"), new Team("B"), new Team("C"), new Team("D")
     );
-    private Map<Character, Team> teamsMap = new HashMap<>();
+    // map of name -> team object for easy access by name
+    private Map<String, Team> teamsMap = new HashMap<>();
 
     public League() {
         for (Team team : teams) {
