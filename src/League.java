@@ -4,13 +4,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class League {
     private List<Hitter> hitters;
     private List<Pitcher> pitchers;
+    private List<Team> teams = Arrays.asList(
+            new Team('A'), new Team('B'), new Team('C'), new Team('D')
+    );
+    private Map<Character, Team> teamsMap = new HashMap<>();
 
     public League() {
+        for (Team team : teams) {
+            teamsMap.put(team.getName(), team);
+        }
         makeHitters();
         makePitchers();
     }
