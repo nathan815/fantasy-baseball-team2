@@ -27,20 +27,12 @@ public class League {
         makePitchers();
     }
 
-    private void setHitters(List<Hitter> hitters) {
-        this.hitters = hitters;
+    public List<Team> getTeams() {
+        return teams;
     }
 
-    private List<Hitter> getHitters() {
-        return hitters;
-    }
-
-    private void setPitchers(List<Pitcher> pitchers) {
-        this.pitchers = pitchers;
-    }
-
-    private List<Pitcher> getPitchers() {
-        return pitchers;
+    public Team getTeam(String name) {
+        return teamsMap.getOrDefault(name, null);
     }
 
     private void makePitchers() {
@@ -172,5 +164,12 @@ public class League {
         }
         reader.endObject();
         return new Hitter(name, team, position, avg, hits, runs, rbis);
+    }
+
+    private List<Hitter> getHitters() {
+        return hitters;
+    }
+    private List<Pitcher> getPitchers() {
+        return pitchers;
     }
 }
