@@ -37,16 +37,13 @@ public class League {
         return teamsMap.getOrDefault(name, null);
     }
 
-    public boolean draftToTeam(String playerName, String teamName) throws PlayerDraftException {
-        String[] nameParts = playerName.split(",");
-        String lastName = nameParts[0];
-        String firstName = nameParts.length >= 2 ? nameParts[1].trim() : "";
-        List<Player> players = findPlayerByLastAndFirstName(lastName, firstName);
+    public boolean draftPlayerToTeam(String playerName, String teamName) throws PlayerDraftException {
+        List<Player> players = findPlayerByName(playerName);
         if(players.isEmpty()) {
             throw new PlayerDraftException("Player " + playerName + " not found");
         } else if(players.size() > 1) {
-            throw new PlayerDraftException("More than one player found for last name " +
-                    lastName + ", must also provide first name.");
+            throw new PlayerDraftException("More than one player found for name " +
+                    playerName + ". Please provide full name in form Last, First (or first initial)");
         }
         Player player = players.get(0);
         Team team = getTeam(teamName);
@@ -58,10 +55,17 @@ public class League {
         return false;
     }
 
+    public List<Player> findPlayerByName(String playerName) {
+        String[] nameParts = playerName.split(",");
+        String lastName = nameParts[0];
+        String firstName = nameParts.length >= 2 ? nameParts[1].trim() : "";
+        return findPlayerByLastAndFirstName(lastName, firstName);
+    }
+
     public List<Player> findPlayerByLastAndFirstName(String lastName, String firstName) {
         return Stream.concat(hitters.stream(), pitchers.stream())
                 .filter(player -> player.getLastName().equals(lastName))
-                .filter(player -> firstName.isEmpty() || player.getFirstName().startsWith(firstName))
+                .filter(player -> firstName.trim().isEmpty() || player.getFirstName().startsWith(firstName))
                 .collect(toList());
     }
 
