@@ -60,9 +60,10 @@ public class League {
     }
 
     private Pitcher readPitcher(JsonReader reader) throws IOException {
-        String name = null;
+        String firstName = null;
+        String lastName = null;
         String team = null;
-        double era = 0.0;
+        double earnedRunAverage = 0.0;
         int strikeOuts = 0;
         int hitsAllowed = 0;
         int runsAllowed = 0;
@@ -71,14 +72,17 @@ public class League {
         while (reader.hasNext()) {
             String data = reader.nextName();
             switch (data) {
-                case "name_display_first_last":
-                    name = reader.nextString();
+                case "first_name":
+                    firstName = reader.nextString();
+                    break;
+                case "last_name":
+                    lastName = reader.nextString();
                     break;
                 case "team_abbrev":
                     team = reader.nextString();
                     break;
                 case "era":
-                    era = Double.parseDouble(reader.nextString());
+                    earnedRunAverage = Double.parseDouble(reader.nextString());
                     break;
                 case "so":
                     strikeOuts = Integer.parseInt(reader.nextString());
@@ -95,7 +99,7 @@ public class League {
             }
         }
         reader.endObject();
-        return new Pitcher(name, team, era, strikeOuts, hitsAllowed, runsAllowed);
+        return new Pitcher(firstName, lastName, team, earnedRunAverage, strikeOuts, hitsAllowed, runsAllowed);
     }
 
     private void makeHitters() {
@@ -124,20 +128,24 @@ public class League {
 
 
     private Hitter readHitter(JsonReader reader) throws IOException {
-        String name = null;
+        String firstName = null;
+        String lastName = null;
         String team = null;
         String position = null;
         double avg = 0.0;
         int hits = 0;
         int runs = 0;
-        int rbis = 0;
+        int runBattedIns = 0;
 
         reader.beginObject();
         while (reader.hasNext()) {
             String data = reader.nextName();
             switch (data) {
-                case "name_display_first_last":
-                    name = reader.nextString();
+                case "first_name":
+                    firstName = reader.nextString();
+                    break;
+                case "last_name":
+                    lastName = reader.nextString();
                     break;
                 case "team_abbrev":
                     team = reader.nextString();
@@ -155,7 +163,7 @@ public class League {
                     runs = Integer.parseInt(reader.nextString());
                     break;
                 case "rbi":
-                    rbis = Integer.parseInt(reader.nextString());
+                    runBattedIns = Integer.parseInt(reader.nextString());
                     break;
                 default:
                     reader.skipValue();
@@ -163,7 +171,7 @@ public class League {
             }
         }
         reader.endObject();
-        return new Hitter(name, team, position, avg, hits, runs, rbis);
+        return new Hitter(firstName, lastName, team, position, avg, hits, runs, runBattedIns);
     }
 
     private List<Hitter> getHitters() {

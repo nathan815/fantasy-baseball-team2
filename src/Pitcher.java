@@ -1,24 +1,24 @@
 public class Pitcher extends Player {
-    private double era;
+    private double earnedRunAverage;
     private int strikeOuts;
     private int hitsAllowed;
     private int runsAllowed;
 
 
-    public Pitcher(String name, String team, double era, int strikeOuts, int hitsAllowed, int runsAllowed) {
-        super(name, team);
-        this.era = era;
+    public Pitcher(String firstName, String lastName, String team, double earnedRunAverage, int strikeOuts, int hitsAllowed, int runsAllowed) {
+        super(firstName, lastName, team);
+        this.earnedRunAverage = earnedRunAverage;
         this.strikeOuts = strikeOuts;
         this.hitsAllowed = hitsAllowed;
         this.runsAllowed = runsAllowed;
     }
 
-    public double getEra() {
-        return era;
+    public double getEarnedRunAverage() {
+        return earnedRunAverage;
     }
 
-    public void setEra(double era) {
-        this.era = era;
+    public void setEarnedRunAverage(double earnedRunAverage) {
+        this.earnedRunAverage = earnedRunAverage;
     }
 
     public int getStrikeOuts() {
