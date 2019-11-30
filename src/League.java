@@ -1,5 +1,4 @@
 import com.google.gson.stream.JsonReader;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,6 +7,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 public class League {
     private List<Hitter> hitters;
@@ -33,6 +35,34 @@ public class League {
 
     public Team getTeam(String name) {
         return teamsMap.getOrDefault(name, null);
+    }
+
+    public boolean draftToTeam(String playerName, String teamName) throws PlayerDraftException {
+        String[] nameParts = playerName.split(",");
+        String lastName = nameParts[0];
+        String firstName = nameParts.length >= 2 ? nameParts[1].trim() : "";
+        List<Player> players = findPlayerByLastAndFirstName(lastName, firstName);
+        if(players.isEmpty()) {
+            throw new PlayerDraftException("Player " + playerName + " not found");
+        } else if(players.size() > 1) {
+            throw new PlayerDraftException("More than one player found for last name " +
+                    lastName + ", must also provide first name.");
+        }
+        Player player = players.get(0);
+        Team team = getTeam(teamName);
+        if(player instanceof Hitter) {
+            return team.draftHitter((Hitter) player);
+        } else if(player instanceof Pitcher) {
+            return team.draftPitcher((Pitcher) player);
+        }
+        return false;
+    }
+
+    public List<Player> findPlayerByLastAndFirstName(String lastName, String firstName) {
+        return Stream.concat(hitters.stream(), pitchers.stream())
+                .filter(player -> player.getLastName().equals(lastName))
+                .filter(player -> firstName.isEmpty() || player.getFirstName().startsWith(firstName))
+                .collect(toList());
     }
 
     private void makePitchers() {
@@ -179,5 +209,11 @@ public class League {
     }
     private List<Pitcher> getPitchers() {
         return pitchers;
+    }
+
+    private static class PlayerDraftException extends Exception {
+        public PlayerDraftException(String message) {
+            super(message);
+        }
     }
 }
