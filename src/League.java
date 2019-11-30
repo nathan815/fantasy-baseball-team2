@@ -72,8 +72,11 @@ public class League {
         while (reader.hasNext()) {
             String data = reader.nextName();
             switch (data) {
-                case "first_name":
-                    firstName = reader.nextString();
+                case "name_display_first_last":
+                    // pitchers weirdly doesn't have name_first field
+                    String[] nameParts = reader.nextString().split(" ");
+                    firstName = nameParts[0];
+                    lastName = nameParts[1];
                     break;
                 case "last_name":
                     lastName = reader.nextString();
@@ -141,10 +144,10 @@ public class League {
         while (reader.hasNext()) {
             String data = reader.nextName();
             switch (data) {
-                case "first_name":
+                case "name_first":
                     firstName = reader.nextString();
                     break;
-                case "last_name":
+                case "name_last":
                     lastName = reader.nextString();
                     break;
                 case "team_abbrev":
