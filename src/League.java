@@ -4,31 +4,35 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class League {
     private List<Hitter> hitters;
     private List<Pitcher> pitchers;
 
+    private List<Team> teams = Arrays.asList(
+            new Team("A"), new Team("B"), new Team("C"), new Team("D")
+    );
+    // map of name -> team object for easy access by name
+    private Map<String, Team> teamsMap = new HashMap<>();
+
     public League() {
+        for (Team team : teams) {
+            teamsMap.put(team.getName(), team);
+        }
         makeHitters();
         makePitchers();
     }
 
-    private void setHitters(List<Hitter> hitters) {
-        this.hitters = hitters;
+    public List<Team> getTeams() {
+        return teams;
     }
 
-    private List<Hitter> getHitters() {
-        return hitters;
-    }
-
-    private void setPitchers(List<Pitcher> pitchers) {
-        this.pitchers = pitchers;
-    }
-
-    private List<Pitcher> getPitchers() {
-        return pitchers;
+    public Team getTeam(String name) {
+        return teamsMap.getOrDefault(name, null);
     }
 
     private void makePitchers() {
@@ -36,7 +40,7 @@ public class League {
             InputStream reader = this.getClass().getResourceAsStream("pitchers.json");
             JsonReader jReader = new JsonReader(new InputStreamReader(reader, "UTF-8"));
             try {
-                setPitchers(readPitchersArray(jReader));
+                pitchers = readPitchersArray(jReader);
             } finally {
                 jReader.close();
             }
@@ -99,7 +103,7 @@ public class League {
             InputStream reader = this.getClass().getResourceAsStream("hitters.json");
             JsonReader jReader = new JsonReader(new InputStreamReader(reader, "UTF-8"));
             try {
-                setHitters(readHittersArray(jReader));
+                hitters = readHittersArray(jReader);
             } finally {
                 jReader.close();
             }
@@ -160,5 +164,12 @@ public class League {
         }
         reader.endObject();
         return new Hitter(name, team, position, avg, hits, runs, rbis);
+    }
+
+    private List<Hitter> getHitters() {
+        return hitters;
+    }
+    private List<Pitcher> getPitchers() {
+        return pitchers;
     }
 }
