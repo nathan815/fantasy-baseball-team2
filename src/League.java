@@ -78,9 +78,6 @@ public class League {
                     firstName = nameParts[0];
                     lastName = nameParts[1];
                     break;
-                case "last_name":
-                    lastName = reader.nextString();
-                    break;
                 case "team_abbrev":
                     team = reader.nextString();
                     break;
