@@ -136,7 +136,28 @@ public class Driver {
 	// method will return user input as an array of strings
 	public static String[] userSplit(String str) {
 		String[] userArray = str.split("\\s+");
-		return userArray;
+
+		if(userArray[0].equals("ODRAFT")) {
+			String[] arr = str.split("\"");
+
+			String req = arr[0].replaceAll("\\s+", "");
+			arr[0]=req;
+
+			String name = arr[2].replaceAll("\\s+", "");
+			arr[2]=name;
+
+			return arr;
+		}
+		else if(userArray[0].equals("IDRAFT")){
+			String[] arr = str.split("\"");
+
+			String req = arr[0].replaceAll("\\s+", "");
+			arr[0]=req;
+
+			return arr;
+		}
+		else
+			return userArray;
 	}
 
 	// method will return the order/request
@@ -155,7 +176,7 @@ public class Driver {
 
 	public static void menu() {
 		System.out.println("-ODRAFT\n-IDRAFT\n-OVERALL\n-POVERALL\n-TEAM\n-STARS\n-SAVE\n-QUIT"
-				+ "\n-RESTOR\n-EVALFUN\n-PEVALFUN\n");
+				+ "\n-RESTORe\n-EVALFUN\n-PEVALFUN\n");
 	}
 
 
