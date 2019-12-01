@@ -20,6 +20,6 @@ public class DriverTest {
     @Test
     public void testInvalidInput() {
         String str = "ABCDE";
-        assertEquals("Invalid Input", Driver.order(str));
+        assertEquals("", Driver.order(str));
     }
 }
