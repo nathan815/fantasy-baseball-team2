@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Scanner;
 
 public class Driver {
@@ -66,7 +67,21 @@ public class Driver {
 
 			case "SAVE": {
 				file = userInput[1];
-				System.out.println(request + file);
+				String saveFileName = file + ".fantasy.txt";
+				try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFileName, false))) {
+					for (Team team : league.getTeams()){
+						writer.write("-" + team.getName() );
+						writer.newLine();
+						for(Player player: team.getPlayers()) {
+							writer.write(player.getLastName() + "," + player.getFirstName());
+							writer.newLine();
+						}
+					}
+					System.out.println("The state of the system has been saved to " + saveFileName);
+				} catch (IOException e) {
+					System.out.println("Unable to save the state of the system to a file named " +
+							saveFileName + ": " + e.getMessage());
+				}
 				break;
 			}
 
