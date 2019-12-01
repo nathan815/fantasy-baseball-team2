@@ -5,10 +5,9 @@ Team 2 - Members: Ebrahim Qasem, Cassandra Flones, William Shields, Nathan Johns
 Google Drive Folder: https://drive.google.com/drive/u/1/folders/1pWbduhIalGVEvOMDqa0hteEXLKwPMFYn
 
 ## Setup
-Download [IntelliJ IDEA](https://www.jetbrains.com/idea/) if you don't yet have it.
-
-1. `git clone https://github.com/emu-computer-science/fantasy-baseball-team2.git`
-2. In IntelliJ IDEA: File > Open... and select `fantasy-baseball-team2` folder.
+1. [Install IntelliJ IDEA](https://www.jetbrains.com/idea/) if you don't yet have it. Students get Ultimate Edition for free, but Community Edition will also work for just Java development.
+2. Clone our repo - `git clone https://github.com/emu-computer-science/fantasy-baseball-team2.git`
+3. In IntelliJ IDEA: File > Open... and select `fantasy-baseball-team2` folder
 
 ### "Project SDK not defined"
 If you see a "project SDK not defined" error bar, you need to configure JDK 13.0.1 in IntelliJ. To do this:
