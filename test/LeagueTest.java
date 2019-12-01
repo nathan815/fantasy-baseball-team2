@@ -6,7 +6,6 @@ import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class LeagueTest {
 
@@ -38,6 +37,7 @@ public class LeagueTest {
         exception.expect(PlayerDraftException.class);
         league.draftPlayerToTeam("FakeLast, FakeFirst", "A");
     }
+
     @Test
     public void draftPlayerToTeam_InvalidTeamName_ShouldThrowException() throws PlayerDraftException {
         exception.expect(PlayerDraftException.class);
@@ -95,5 +95,37 @@ public class LeagueTest {
         Player player = results.get(0);
         assertEquals("Nelson", player.getFirstName());
         assertEquals("Cruz", player.getLastName());
+    }
+
+    @Test
+    public void findPlayerByName_NonUniqueLastName_ShouldReturnListWithMatchingPlayers() {
+        // three players: Carlos Santana, Domingo Santana, and Danny Santana
+        List<Player> results = league.findPlayerByName("Santana");
+        assertEquals(3, results.size());
+    }
+
+    @Test
+    public void findPlayerByName_NonUniqueLastNameAndFirstInitial_ShouldReturnListWithMatchingPlayers() {
+        // two players: Domingo Santana and Danny Santana
+        List<Player> results = league.findPlayerByName("Santana, D");
+        assertEquals(2, results.size());
+    }
+
+    @Test
+    public void findPlayerByName_NonUniqueLastNameAndUniqueFirstName_ShouldReturnListWithOnePlayer() {
+        List<Player> results1 = league.findPlayerByName("Santana, Danny");
+        assertEquals(1, results1.size());
+        assertEquals("Danny", results1.get(0).getFirstName());
+
+        List<Player> results2 = league.findPlayerByName("Santana, Domingo");
+        assertEquals(1, results2.size());
+        assertEquals("Domingo", results2.get(0).getFirstName());
+    }
+
+    @Test
+    public void findPlayerByName_NonUniqueLastNameAndUniqueFirstInitial_ShouldReturnListWithOnePlayer() {
+        List<Player> results = league.findPlayerByName("Santana, C");
+        assertEquals(1, results.size());
+        assertEquals("Carlos", results.get(0).getFirstName());
     }
 }

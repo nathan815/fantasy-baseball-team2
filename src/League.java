@@ -221,10 +221,10 @@ public class League {
         return new Hitter(firstName, lastName, team, position, avg, hits, runs, runBattedIns);
     }
 
-    private List<Hitter> getHitters() {
+    public List<Hitter> getHitters() {
         return hitters;
     }
-    private List<Pitcher> getPitchers() {
+    public List<Pitcher> getPitchers() {
         return pitchers;
     }
 
