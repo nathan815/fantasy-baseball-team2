@@ -1,5 +1,4 @@
 import com.google.gson.stream.JsonReader;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,6 +7,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 public class League {
     private List<Hitter> hitters;
@@ -33,6 +35,51 @@ public class League {
 
     public Team getTeam(String name) {
         return teamsMap.getOrDefault(name, null);
+    }
+
+    public void draftPlayerToTeam(String playerName, String teamName) throws PlayerDraftException {
+        List<Player> players = findPlayerByName(playerName);
+        if(players.isEmpty()) {
+            throw new PlayerDraftException("Player " + playerName + " not found");
+        } else if(players.size() > 1) {
+            throw new PlayerDraftException("More than one player found for name " +
+                    playerName + ". Please provide full name in form Last,First (or first initial)");
+        }
+        Player player = players.get(0);
+        if(player.isDrafted()) {
+            throw new PlayerDraftException("Player is already drafted!");
+        }
+        Team team = getTeam(teamName);
+        if(team == null) {
+            throw new PlayerDraftException("Invalid team name " + teamName);
+        }
+        if(player instanceof Hitter) {
+            boolean drafted = team.draftHitter((Hitter) player);
+            if(!drafted) {
+                throw new PlayerDraftException("Unable to draft hitter " + playerName);
+            }
+        } else if(player instanceof Pitcher) {
+            boolean drafted = team.draftPitcher((Pitcher) player);
+            if(!drafted) {
+                throw new PlayerDraftException("Unable to draft pitcher " + playerName);
+            }
+        } else {
+            throw new PlayerDraftException("Invalid player");
+        }
+    }
+
+    public List<Player> findPlayerByName(String playerName) {
+        String[] nameParts = playerName.split(",");
+        String lastName = nameParts[0].trim();
+        String firstName = nameParts.length >= 2 ? nameParts[1].trim() : "";
+        return findPlayerByLastAndFirstName(lastName, firstName);
+    }
+
+    private List<Player> findPlayerByLastAndFirstName(String lastName, String firstName) {
+        return Stream.concat(hitters.stream(), pitchers.stream())
+                .filter(player -> player.getLastName().equals(lastName))
+                .filter(player -> firstName.isEmpty() || player.getFirstName().startsWith(firstName))
+                .collect(toList());
     }
 
     private void makePitchers() {
@@ -180,4 +227,5 @@ public class League {
     private List<Pitcher> getPitchers() {
         return pitchers;
     }
+
 }
