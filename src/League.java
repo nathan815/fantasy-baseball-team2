@@ -46,9 +46,12 @@ public class League {
                     playerName + ". Please provide full name in form Last,First (or first initial)");
         }
         Player player = players.get(0);
-        Team team = getTeam(teamName);
         if(player.isDrafted()) {
-            throw new PlayerDraftException("Player is already drafted to another team!");
+            throw new PlayerDraftException("Player is already drafted!");
+        }
+        Team team = getTeam(teamName);
+        if(team == null) {
+            throw new PlayerDraftException("Invalid team name " + teamName);
         }
         if(player instanceof Hitter) {
             boolean drafted = team.draftHitter((Hitter) player);
@@ -60,6 +63,8 @@ public class League {
             if(!drafted) {
                 throw new PlayerDraftException("Unable to draft pitcher " + playerName);
             }
+        } else {
+            throw new PlayerDraftException("Invalid player");
         }
     }
 

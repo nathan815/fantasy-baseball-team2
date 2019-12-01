@@ -30,13 +30,18 @@ public class LeagueTest {
 
     @Test
     public void getTeam_InvalidTeamName_ShouldReturnNull() {
-        assertNull(league.getTeam("hello"));
+        assertNull(league.getTeam("fake team"));
     }
 
     @Test
     public void draftPlayerToTeam_InvalidFirstAndLastName_ShouldThrowException() throws PlayerDraftException {
         exception.expect(PlayerDraftException.class);
         league.draftPlayerToTeam("FakeLast, FakeFirst", "A");
+    }
+    @Test
+    public void draftPlayerToTeam_InvalidTeamName_ShouldThrowException() throws PlayerDraftException {
+        exception.expect(PlayerDraftException.class);
+        league.draftPlayerToTeam("Cruz", "fake team");
     }
 
     @Test
@@ -48,21 +53,21 @@ public class LeagueTest {
     @Test
     public void draftPlayerToTeam_PlayerAlreadyDrafted_ShouldThrowException() throws PlayerDraftException {
         // first we draft Nelson Cruz to team A
-        league.draftPlayerToTeam("Cruz, Nelson", "A");
+        league.draftPlayerToTeam("Cruz", "A");
 
         // trying to draft him again should throw exception
         exception.expect(PlayerDraftException.class);
-        league.draftPlayerToTeam("Cruz, Nelson", "A");
+        league.draftPlayerToTeam("Cruz", "A");
     }
 
     @Test
     public void draftPlayerToTeam_PlayerAlreadyDraftedToAnotherTeam_ShouldThrowException() throws PlayerDraftException {
         // first we draft Nelson Cruz to team A
-        league.draftPlayerToTeam("Cruz, Nelson", "A");
+        league.draftPlayerToTeam("Cruz", "A");
 
-        // trying to draft him to another team should throw exception
+        // trying to draft him again to another team should throw exception
         exception.expect(PlayerDraftException.class);
-        league.draftPlayerToTeam("Cruz, Nelson", "B");
+        league.draftPlayerToTeam("Cruz", "B");
     }
 
     @Test

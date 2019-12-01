@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Scanner;
 
 public class Driver {
 
@@ -9,34 +9,39 @@ public class Driver {
 
 		System.out.println("Enter your order: ");
 		String user = input.nextLine();
+		League league = new League();
 
 		while (!(user.contentEquals("QUIT"))) {
 			// split user input
-			String[] array = userSplit(user);
+			String[] userInput = userSplit(user);
 
 			// Verify user request
-			String request = order(array[0]);
+			String request = order(userInput[0]);
 
-			String player, league, position, file, expression;
+			String playerName, teamName, position, file, expression;
 
-			// All the print statements are for testing purposes
 			switch (request) {
-			case "ODRAFT": {
-				player = array[1];
-				league = array[2];
-				System.out.println(request + player + league);
+				case "ODRAFT":
+				case "IDRAFT":
+					if(userInput.length <= 1) {
+						System.out.println("Error: Must provide player last name. " +
+								"If ambiguous last name, also provide first name/first initial in format: Last, First OR Last, F");
+					} else if(request.equals("ODRAFT") && userInput.length < 3) {
+						System.out.println("Error: Must provide league member name");
+					} else {
+						playerName = userInput[1];
+						teamName = request.equals("IDRAFT") ? "A" : userInput[2];
+						try {
+							league.draftPlayerToTeam(playerName, teamName);
+						} catch (PlayerDraftException e) {
+							System.out.println("Error: " + e.getMessage());
+						}
+					}
 				break;
-			}
-
-			case "IDRAFT": {
-				player = array[1];
-				System.out.println(request + player);
-				break;
-			}
 
 			case "OVERALL": {
-				if (array.length > 1) {
-					position = array[1];
+				if(userInput.length > 1) {
+					position = userInput[1];
 					System.out.println(request + position);
 				}
 				break;
@@ -48,37 +53,37 @@ public class Driver {
 			}
 
 			case "TEAM": {
-				league = array[1];
-				System.out.println(request + league);
+				teamName = userInput[1];
+				System.out.println(request + teamName);
 				break;
 			}
 
 			case "STARS": {
-				league = array[1];
-				System.out.println(request + league);
+				teamName = userInput[1];
+				System.out.println(request + teamName);
 				break;
 			}
 
 			case "SAVE": {
-				file = array[1];
+				file = userInput[1];
 				System.out.println(request + file);
 				break;
 			}
 
 			case "RESTORE": {
-				file = array[1];
+				file = userInput[1];
 				System.out.println(request + file);
 				break;
 			}
 
 			case "EVALFUN": {
-				expression = array[1];
+				expression = userInput[1];
 				System.out.println(request + expression);
 				break;
 			}
 
 			case "PEVALFUN": {
-				expression = array[1];
+				expression = userInput[1];
 				System.out.println(request + expression);
 				break;
 			}
