@@ -37,35 +37,43 @@ public class League {
         return teamsMap.getOrDefault(name, null);
     }
 
-    public boolean draftPlayerToTeam(String playerName, String teamName) throws PlayerDraftException {
+    public void draftPlayerToTeam(String playerName, String teamName) throws PlayerDraftException {
         List<Player> players = findPlayerByName(playerName);
         if(players.isEmpty()) {
             throw new PlayerDraftException("Player " + playerName + " not found");
         } else if(players.size() > 1) {
             throw new PlayerDraftException("More than one player found for name " +
-                    playerName + ". Please provide full name in form Last, First (or first initial)");
+                    playerName + ". Please provide full name in form Last,First (or first initial)");
         }
         Player player = players.get(0);
         Team team = getTeam(teamName);
-        if(player instanceof Hitter) {
-            return team.draftHitter((Hitter) player);
-        } else if(player instanceof Pitcher) {
-            return team.draftPitcher((Pitcher) player);
+        if(player.isDrafted()) {
+            throw new PlayerDraftException("Player is already drafted to another team!");
         }
-        return false;
+        if(player instanceof Hitter) {
+            boolean drafted = team.draftHitter((Hitter) player);
+            if(!drafted) {
+                throw new PlayerDraftException("Unable to draft hitter " + playerName);
+            }
+        } else if(player instanceof Pitcher) {
+            boolean drafted = team.draftPitcher((Pitcher) player);
+            if(!drafted) {
+                throw new PlayerDraftException("Unable to draft pitcher " + playerName);
+            }
+        }
     }
 
     public List<Player> findPlayerByName(String playerName) {
         String[] nameParts = playerName.split(",");
-        String lastName = nameParts[0];
+        String lastName = nameParts[0].trim();
         String firstName = nameParts.length >= 2 ? nameParts[1].trim() : "";
         return findPlayerByLastAndFirstName(lastName, firstName);
     }
 
-    public List<Player> findPlayerByLastAndFirstName(String lastName, String firstName) {
+    private List<Player> findPlayerByLastAndFirstName(String lastName, String firstName) {
         return Stream.concat(hitters.stream(), pitchers.stream())
                 .filter(player -> player.getLastName().equals(lastName))
-                .filter(player -> firstName.trim().isEmpty() || player.getFirstName().startsWith(firstName))
+                .filter(player -> firstName.isEmpty() || player.getFirstName().startsWith(firstName))
                 .collect(toList());
     }
 
@@ -215,9 +223,4 @@ public class League {
         return pitchers;
     }
 
-    private static class PlayerDraftException extends Exception {
-        public PlayerDraftException(String message) {
-            super(message);
-        }
-    }
 }
