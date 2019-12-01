@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class Driver {
@@ -19,7 +20,7 @@ public class Driver {
 			// Verify user request
 			String request = order(userInput[0]);
 
-			String playerName, teamName, position, file, expression;
+			String playerName, teamName = "", position, file, expression;
 
 			switch (request) {
 				case "ODRAFT":
@@ -34,6 +35,7 @@ public class Driver {
 						teamName = request.equals("IDRAFT") ? "A" : userInput[2];
 						try {
 							league.draftPlayerToTeam(playerName, teamName);
+							System.out.println("Successfully Drafted.");
 						} catch (PlayerDraftException e) {
 							System.out.println("Error: " + e.getMessage());
 						}
@@ -87,7 +89,20 @@ public class Driver {
 
 			case "RESTORE": {
 				file = userInput[1];
-				System.out.println(request + file);
+				String restoreFileName = file + ".fantasy.txt";
+				try (BufferedReader br = new BufferedReader(new FileReader(restoreFileName))) {
+					String line;
+					while((line = br.readLine()) != null){
+						if(line.charAt(0) == '-')
+							teamName = line.substring(1);
+						else
+							league.draftPlayerToTeam(line, teamName);
+					}
+					System.out.println("The state of the system has been restored from " + restoreFileName);
+				} catch (IOException | PlayerDraftException e) {
+					System.out.println("Unable to restore the state of the system from a file named " +
+							restoreFileName + ": " + e.getMessage());
+				}
 				break;
 			}
 
@@ -102,6 +117,9 @@ public class Driver {
 				System.out.println(request + expression);
 				break;
 			}
+
+			default:
+				System.out.println("Invalid Input");
 
 			}
 
@@ -130,11 +148,9 @@ public class Driver {
 		for (int i = 0; i < orders.length; i++) {
 
 			if (userInput.equals(orders[i]))
-				return str = orders[i];
-			else
-				str = "Invalid Input";
+				return orders[i];
 		}
-		return str;
+		return "";
 	}
 
 	public static void menu() {
