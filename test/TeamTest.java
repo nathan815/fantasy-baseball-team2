@@ -84,11 +84,11 @@ public class TeamTest {
     }
 
     private static Hitter makeHitterWithPosition(String pos) {
-        return new Hitter("player name" + pos, "team", pos, 0.5, 1, 1, 1);
+        return new Hitter("firstname" + pos, "lastname", "team", pos, 0.5, 1, 1, 1);
     }
 
     private static Pitcher makePitcher() {
-        return new Pitcher("name", "team", 1.0, 1, 1, 1);
+        return new Pitcher("firstname", "lastname", "team", 1.0, 1, 1, 1);
     }
 
     private static <T> List<T> makeList(T ...items) {

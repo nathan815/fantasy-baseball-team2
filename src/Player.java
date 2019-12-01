@@ -1,9 +1,10 @@
 public abstract class Player {
-    private String playerName, playerTeam;
+    private String firstName, lastName, playerTeam;
     private boolean isDrafted = false;
 
-    public Player(String name, String team){
-        playerName = name;
+    public Player(String firstName, String lastName, String team) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         playerTeam = team;
     }
 
@@ -11,8 +12,12 @@ public abstract class Player {
         return playerTeam;
     }
 
-    public String getPlayerName(){
-        return playerName;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public boolean isDrafted() {
