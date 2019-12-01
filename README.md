@@ -4,15 +4,30 @@ Team 2 - Members: Ebrahim Qasem, Cassandra Flones, William Shields, Nathan Johns
 
 Google Drive Folder: https://drive.google.com/drive/u/1/folders/1pWbduhIalGVEvOMDqa0hteEXLKwPMFYn
 
+## Project Submission Details
+
 GitHub: https://github.com/emu-computer-science/fantasy-baseball-team2/
 
-## Sample Output
+### Supported Stats
+Pitchers
+- ERA (EarnedRunAverage)
+- SO (StrikeOuts)
+- HA (HitsAllowed)
+- RA (RunsAllowed)
+
+Hitters
+- AVG (Average)
+- H (Hits)
+- R (Runs)
+- RBI (RunBattedIns)
+
+### Sample Output
 
 ```
 ...
 ```
 
-## Setup
+## Dev Setup
 1. [Install IntelliJ IDEA](https://www.jetbrains.com/idea/) if you don't yet have it. Students get Ultimate Edition for free, but Community Edition will also work for just Java development.
 2. Clone our repo - `git clone https://github.com/emu-computer-science/fantasy-baseball-team2.git`
 3. In IntelliJ IDEA: File > Open... and select `fantasy-baseball-team2` folder
