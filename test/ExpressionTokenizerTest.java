@@ -18,7 +18,7 @@ public class ExpressionTokenizerTest {
                 ExpressionToken.operator("+"),
                 ExpressionToken.operand("4")
         );
-        assertThat(Expression.Tokenizer.tokenize(expr), is(expectedTokens));
+        assertThat(ExpressionTokenizer.tokenize(expr), is(expectedTokens));
     }
 
     @Test
@@ -35,6 +35,6 @@ public class ExpressionTokenizerTest {
                 ExpressionToken.operator("+"),
                 ExpressionToken.operand("3.25")
         );
-        assertThat(Expression.Tokenizer.tokenize(expr), is(expectedTokens));
+        assertThat(ExpressionTokenizer.tokenize(expr), is(expectedTokens));
     }
 }
