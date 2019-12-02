@@ -16,7 +16,7 @@ public class Expression {
 
     @Override
     public String toString() {
-        return tokens.stream().map(t -> t.value).collect(joining(" "));
+        return tokens.stream().map(t -> t.name).collect(joining(" "));
     }
 
 }

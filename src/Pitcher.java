@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Pitcher extends Player {
     private double earnedRunAverage;
     private int strikeOuts;
@@ -11,6 +14,16 @@ public class Pitcher extends Player {
         this.strikeOuts = strikeOuts;
         this.hitsAllowed = hitsAllowed;
         this.runsAllowed = runsAllowed;
+    }
+
+    @Override
+    public Map<String, Double> getStatValuesMap() {
+        Map<String, Double> values = new HashMap<>();
+        values.put("ERA", earnedRunAverage);
+        values.put("SO", (double)strikeOuts);
+        values.put("HA", (double)hitsAllowed);
+        values.put("RA", (double)runsAllowed);
+        return values;
     }
 
     public double getEarnedRunAverage() {
@@ -44,4 +57,5 @@ public class Pitcher extends Player {
     public void setRunsAllowed(int runsAllowed) {
         this.runsAllowed = runsAllowed;
     }
+
 }

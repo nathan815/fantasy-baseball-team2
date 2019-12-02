@@ -1,3 +1,5 @@
+import java.util.Map;
+
 public abstract class Player {
     private String firstName, lastName, playerTeam;
     private boolean isDrafted = false;
@@ -28,4 +30,5 @@ public abstract class Player {
         isDrafted = true;
     }
 
+    public abstract Map<String, Double> getStatValuesMap();
 }

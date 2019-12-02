@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Hitter extends Player {
     private String position;
     private double avg;
@@ -12,6 +15,16 @@ public class Hitter extends Player {
         this.hits = hits;
         this.runs = runs;
         this.runBattedIns = runBattedIns;
+    }
+
+    @Override
+    public Map<String, Double> getStatValuesMap() {
+        Map<String, Double> values = new HashMap<>();
+        values.put("AVG", avg);
+        values.put("H", (double)hits);
+        values.put("R", (double)runs);
+        values.put("RBI", (double)runBattedIns);
+        return values;
     }
 
     public String getPosition() {
