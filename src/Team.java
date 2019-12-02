@@ -58,6 +58,13 @@ public class Team {
     public String getName() {
         return name;
     }
+    public void stars()
+    {
+    	for (int i=0; i<players.size; i++)
+    	{
+    		System.out.println(this.players);
+    	}
+    }
 
     // Returns true if a given hitter's position is available, false otherwise
     private boolean isHitterPositionAvailable(Hitter otherHitter) {
