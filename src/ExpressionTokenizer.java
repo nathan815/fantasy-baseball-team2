@@ -17,16 +17,16 @@ public class ExpressionTokenizer {
         for(char c : expression.toCharArray()) {
             if(isOperator(c)) {
                 if(!currentOperand.isEmpty()) {
-                    tokens.add(new ExpressionToken(ExpressionToken.Type.OPERAND, currentOperand));
+                    tokens.add(ExpressionToken.operand(currentOperand));
                     currentOperand = "";
                 }
-                tokens.add(new ExpressionToken(ExpressionToken.Type.OPERATOR, Character.toString(c)));
+                tokens.add(ExpressionToken.operator(Character.toString(c)));
             } else if(c != ' ') {
                 currentOperand += c;
             }
         }
         if(!currentOperand.isEmpty()) {
-            tokens.add(new ExpressionToken(ExpressionToken.Type.OPERAND, currentOperand));
+            tokens.add(ExpressionToken.operand(currentOperand));
         }
         return tokens;
     }
