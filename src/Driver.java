@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 
 public class Driver {
@@ -45,13 +46,30 @@ public class Driver {
 			case "OVERALL": {
 				if(userInput.length > 1) {
 					position = userInput[1];
-					System.out.println(request + position);
+                    List<Hitter> ranked = league.overall(position);
+                    if(ranked.size() == 0){
+                        System.out.println("Position already drafted.");
+                    }else {
+                        printHitters(ranked);
+                    }
+                }else{
+					List<Hitter> ranked = league.overall(null);
+					if(ranked.size() == 0){
+						System.out.println("No positions available to draft.");
+					}else {
+						printHitters(ranked);
+					}
 				}
 				break;
 			}
 
 			case "POVERALL": {
-				System.out.println(request);
+				List<Pitcher> ranked = league.pOverall();
+				if(ranked.size() == 0){
+					System.out.println("Max pitchers already drafted");
+				}else{
+					printPitchers(ranked);
+				}
 				break;
 			}
 
@@ -176,8 +194,22 @@ public class Driver {
 
 	public static void menu() {
 		System.out.println("-ODRAFT\n-IDRAFT\n-OVERALL\n-POVERALL\n-TEAM\n-STARS\n-SAVE\n-QUIT"
-				+ "\n-RESTORe\n-EVALFUN\n-PEVALFUN\n");
+				+ "\n-RESTORE\n-EVALFUN\n-PEVALFUN\n");
 	}
 
+	private static void printHitters(List<Hitter> hitters){
+		for (int i = 0; i < hitters.size(); i++) {
+			Hitter player = hitters.get(i);
+			//TODO: Change to getValuation when available
+			System.out.println(player.getFirstName() + " " + player.getLastName() + " " + player.getPlayerTeam() + " " + 0.0);
+		}
+	}
 
+	private static void printPitchers(List<Pitcher> pitchers){
+		for (int i = 0; i < pitchers.size(); i++) {
+			Pitcher player = pitchers.get(i);
+			//TODO: Change to getValuation when available
+			System.out.println(player.getFirstName() + " " + player.getLastName() + " " + player.getPlayerTeam() + " " + 0.0);
+		}
+	}
 }
