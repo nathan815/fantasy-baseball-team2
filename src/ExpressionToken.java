@@ -1,5 +1,5 @@
 class ExpressionToken {
-    enum Type { OPERATOR, OPERAND };
+    enum Type { OPERATOR, OPERAND_NUMERIC, OPERAND_VAR };
 
     public Type type;
     public String value;
@@ -14,7 +14,15 @@ class ExpressionToken {
     }
 
     public static ExpressionToken operand(String value) {
-        return new ExpressionToken(ExpressionToken.Type.OPERAND, value);
+        return new ExpressionToken(Utils.isNumeric(value) ? Type.OPERAND_NUMERIC : Type.OPERAND_VAR, value);
+    }
+
+    public char getOperator() {
+        return value.charAt(0);
+    }
+
+    public double getNumericValue() {
+        return Double.parseDouble(value);
     }
 
     @Override
