@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 public class ExpressionTokenizer {
-    private static final Set<Character> operators = new HashSet<>(Arrays.asList('+', '-', '*', '/'));
-
     /**
      * Takes an expression string and returns a list of tokens to be used for evaluation
      */
@@ -15,7 +13,7 @@ public class ExpressionTokenizer {
         String currentOperand = "";
         // Go through each character in the expression string and determine if it is an operator or part of an operand
         for(char c : expression.toCharArray()) {
-            if(isOperator(c)) {
+            if(ExpressionOperators.isOperator(c)) {
                 if(!currentOperand.isEmpty()) {
                     tokens.add(ExpressionToken.operand(currentOperand));
                     currentOperand = "";
@@ -29,9 +27,5 @@ public class ExpressionTokenizer {
             tokens.add(ExpressionToken.operand(currentOperand));
         }
         return tokens;
-    }
-
-    private static boolean isOperator(char c) {
-        return operators.contains(c);
     }
 }

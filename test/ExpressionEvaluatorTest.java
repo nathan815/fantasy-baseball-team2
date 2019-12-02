@@ -23,7 +23,7 @@ public class ExpressionEvaluatorTest {
     public void evaluate_SingleOperandExpr_ShouldReturnCorrectValue() throws ExpressionEvaluationException {
         // Simple single operand expression "AVG" should simply output the hitter's average
         Expression expr = new Expression(Arrays.asList(ExpressionToken.operand("AVG")));
-        assertEquals(hitter.getAvg(), new ExpressionEvaluator(expr).evaluate(pitcher), 0.0);
+        assertEquals(hitter.getAvg(), new ExpressionEvaluator(expr).evaluate(hitter), 0.0);
     }
 
     @Test

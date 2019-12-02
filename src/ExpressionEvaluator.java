@@ -28,7 +28,7 @@ public class ExpressionEvaluator {
                 operands.push(statValues.get(token.name));
             } else if(token.type == ExpressionToken.Type.OPERATOR) {
                 // first apply operators at top of stack with precedence higher than this operator
-                while(!operators.isEmpty() && hasPrecedence(token, operators.peek())) {
+                while(!operators.isEmpty() && ExpressionOperators.hasPrecedence(token.getOperator(), operators.peek().getOperator())) {
                     operands.push(applyOperator(operators.pop(), operands.pop(), operands.pop()));
                 }
                 // now we add our current operator to the stack
@@ -43,12 +43,6 @@ public class ExpressionEvaluator {
 
         // Top of values stack contains the result
         return operands.pop();
-    }
-
-    private boolean hasPrecedence(ExpressionToken tok1, ExpressionToken tok2) {
-        char op1 = tok1.getOperator();
-        char op2 = tok2.getOperator();
-        return (op1 == '+' || op1 == '-') && (op2 == '*' || op2 == '/');
     }
 
     private double applyOperator(ExpressionToken operator, double b, double a) {
