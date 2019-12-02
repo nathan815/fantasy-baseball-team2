@@ -27,7 +27,7 @@ public class ExpressionEvaluatorTest {
     }
 
     @Test
-    public void evaluate_SimpleAdditionExpr_ShouldReturnCorrectValue() throws ExpressionEvaluationException {
+    public void evaluate_SimpleAllAdditionExpr_ShouldReturnCorrectValue() throws ExpressionEvaluationException {
         double expectedOutput = hitter.getAvg() + hitter.getHits() + hitter.getRuns();
         // Expression: 'AVG + H + R' (avg + hits + runs)
         Expression expr = new Expression(Arrays.asList(
@@ -35,6 +35,21 @@ public class ExpressionEvaluatorTest {
                 ExpressionToken.operator("+"),
                 ExpressionToken.operand("H"),
                 ExpressionToken.operator("+"),
+                ExpressionToken.operand("R")
+        ));
+        assertEquals(expectedOutput, new ExpressionEvaluator(expr).evaluate(hitter), 0.0);
+    }
+
+    @Test
+    public void evaluate_SimpleAllMinusExpr_ShouldReturnCorrectValue() throws ExpressionEvaluationException {
+        double expectedOutput = hitter.getAvg() - hitter.getHits() - hitter.getRuns();
+        // Expression: 'AVG - H - R' (avg - hits - runs)
+        // AVG - H - R = 0.5 - 5 - 10 = -14.5
+        Expression expr = new Expression(Arrays.asList(
+                ExpressionToken.operand("AVG"),
+                ExpressionToken.operator("-"),
+                ExpressionToken.operand("H"),
+                ExpressionToken.operator("-"),
                 ExpressionToken.operand("R")
         ));
         assertEquals(expectedOutput, new ExpressionEvaluator(expr).evaluate(hitter), 0.0);
