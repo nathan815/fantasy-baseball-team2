@@ -1,17 +1,13 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import static java.util.stream.Collectors.joining;
 
 public class Expression {
 
-    private String expressionString;
     private List<ExpressionToken> tokens;
 
-    public Expression(String expressionString) {
-        this.expressionString = expressionString;
-        this.tokens = Tokenizer.tokenize(expressionString);
+    public Expression(List<ExpressionToken> tokens) {
+        this.tokens = tokens;
     }
 
     public List<ExpressionToken> getTokens() {
@@ -20,7 +16,7 @@ public class Expression {
 
     @Override
     public String toString() {
-        return expressionString;
+        return tokens.stream().map(t -> t.value).collect(joining(" "));
     }
 
 }
