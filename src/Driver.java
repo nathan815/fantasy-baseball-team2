@@ -64,7 +64,8 @@ public class Driver {
 			case "STARS": {
 				teamName = userInput[1];
 				System.out.println(request + teamName);
-				System.out.println(Team.getPlayers());
+				Team team = league.getTeams();
+				System.out.println(team);
 				break;
 			}
 
