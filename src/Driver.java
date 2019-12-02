@@ -64,7 +64,6 @@ public class Driver {
 			}
 
 			case "POVERALL": {
-				System.out.println(request);
 				List<Pitcher> ranked = league.pOverall();
 				if(ranked.size() == 0){
 					System.out.println("Max pitchers already drafted");
