@@ -5,10 +5,11 @@ public abstract class Player implements Comparable<Player> {
     private double valuation;
     private boolean isDrafted = false;
 
-    public Player(String firstName, String lastName, String team) {
+    public Player(String firstName, String lastName, String playerTeam, double initialValuation) {
         this.firstName = firstName;
         this.lastName = lastName;
-        playerTeam = team;
+        this.playerTeam = playerTeam;
+        this.valuation = initialValuation;
     }
 
     public String getPlayerTeam(){
@@ -21,6 +22,14 @@ public abstract class Player implements Comparable<Player> {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public String getNameLastCommaFirst() {
+        return lastName + ", " + firstName;
     }
 
     public boolean isDrafted() {
