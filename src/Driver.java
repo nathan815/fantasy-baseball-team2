@@ -1,5 +1,3 @@
-import java.io.*;
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -22,6 +20,7 @@ public class Driver {
 		System.out.println("Enter your command: ");
 		String user = input.nextLine();
 		League league = new League();
+		Expression currentHitterExpression = null, currentPitcherExpression = null;
 
 		while (!(user.contentEquals("QUIT"))) {
 			// split user input
@@ -58,15 +57,15 @@ public class Driver {
                     List<Hitter> ranked = league.overall(position);
                     if(ranked.size() == 0){
                         System.out.println("Position already drafted.");
-                    }else {
-                        printHitters(ranked);
+                    } else {
+                        printHitters(ranked, currentHitterExpression);
                     }
                 }else{
 					List<Hitter> ranked = league.overall(null);
 					if(ranked.size() == 0){
 						System.out.println("No positions available to draft.");
 					}else {
-						printHitters(ranked);
+						printHitters(ranked, currentHitterExpression);
 					}
 				}
 				break;
@@ -77,7 +76,7 @@ public class Driver {
 				if(ranked.size() == 0){
 					System.out.println("Max pitchers already drafted");
 				}else{
-					printPitchers(ranked);
+					printPitchers(ranked, currentPitcherExpression);
 				}
 				break;
 			}
@@ -136,16 +135,23 @@ public class Driver {
 					if(userInput.length > 1) {
 						String expressionStr = getExpressionFromUserInput(userInput);
 						// EVALFUN is for hitters, PEVALFUN is for pitchers
-						List<? extends Player> players = request.equals("EVALFUN") ? league.getHitters() : league.getPitchers();
+						boolean isHitters = request.equals("EVALFUN");
+						List<? extends Player> players = isHitters ? league.getHitters() : league.getPitchers();
 						Expression expression = new Expression(ExpressionTokenizer.tokenize(expressionStr));
+						// Keep track of our current expression for hitter/pitcher
+						if(isHitters) {
+							currentHitterExpression = expression;
+						} else {
+							currentPitcherExpression = expression;
+						}
 						ExpressionEvaluator evaluator = new ExpressionEvaluator(expression);
 						try {
+							// Evaluate the expression for each player and set player's valuation to result
 							for(Player player : players) {
 								double valuation = evaluator.evaluate(player);
 								player.setValuation(valuation);
 							}
 							Collections.sort(players);
-							players.forEach(p -> System.out.println(p.getFirstName() + " " + p.getLastName() + ": " + p.getValuation()));
 						} catch (ExpressionEvaluationException e) {
 							System.out.println("Evaluation Error: " + e.getMessage());
 						}
@@ -215,19 +221,23 @@ public class Driver {
 				+ "\n-RESTORE\n-EVALFUN\n-PEVALFUN\n");
 	}
 
-	private static void printHitters(List<Hitter> hitters){
-		for (int i = 0; i < hitters.size(); i++) {
-			Hitter player = hitters.get(i);
-			//TODO: Change to getValuation when available
-			System.out.println(player.getFirstName() + " " + player.getLastName() + " " + player.getPlayerTeam() + " " + 0.0);
+	private static final String PLAYER_PRINT_FORMAT = "%-30s%-15s%-15s%s\n";
+
+	private static void printPlayerHeader(String valuationExpr) {
+		System.out.printf(PLAYER_PRINT_FORMAT, "Name", "Team", "Position", "Valuation (" + valuationExpr + ")");
+	}
+
+	private static void printHitters(List<Hitter> hitters, Expression hitterExpression) {
+		printPlayerHeader(hitterExpression == null ? Hitter.INITIAL_STAT : hitterExpression.toString());
+		for(Hitter h : hitters) {
+			System.out.printf(PLAYER_PRINT_FORMAT, h.getNameLastCommaFirst(),  h.getPlayerTeam(), h.getPosition(), h.getValuation());
 		}
 	}
 
-	private static void printPitchers(List<Pitcher> pitchers){
-		for (int i = 0; i < pitchers.size(); i++) {
-			Pitcher player = pitchers.get(i);
-			//TODO: Change to getValuation when available
-			System.out.println(player.getFirstName() + " " + player.getLastName() + " " + player.getPlayerTeam() + " " + 0.0);
+	private static void printPitchers(List<Pitcher> pitchers, Expression pitcherExpression) {
+		printPlayerHeader(pitcherExpression == null ? Pitcher.INITIAL_STAT : pitcherExpression.toString());
+		for(Pitcher p : pitchers) {
+			System.out.printf(PLAYER_PRINT_FORMAT, p.getNameLastCommaFirst(), p.getPlayerTeam(), "P", p.getValuation());
 		}
 	}
 
