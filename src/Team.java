@@ -69,7 +69,7 @@ public class Team {
         return true;
     }
 
-    public boolean isPitcherAvailable(){
+    public boolean isPitcherAvailable() {
         return getPitchers().size() < NUM_PITCHERS;
     }
 

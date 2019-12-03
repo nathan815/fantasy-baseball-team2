@@ -12,7 +12,7 @@ public abstract class Player implements Comparable<Player> {
         this.valuation = initialValuation;
     }
 
-    public String getPlayerTeam(){
+    public String getPlayerTeam() {
         return playerTeam;
     }
 

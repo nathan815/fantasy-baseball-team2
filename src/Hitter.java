@@ -23,9 +23,9 @@ public class Hitter extends Player {
     public Map<String, Double> getStatValuesMap() {
         Map<String, Double> values = new HashMap<>();
         values.put("AVG", avg);
-        values.put("H", (double)hits);
-        values.put("R", (double)runs);
-        values.put("RBI", (double)runBattedIns);
+        values.put("H", (double) hits);
+        values.put("R", (double) runs);
+        values.put("RBI", (double) runBattedIns);
         return values;
     }
 

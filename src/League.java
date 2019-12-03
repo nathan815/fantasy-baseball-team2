@@ -82,7 +82,7 @@ public class League {
     public List<Hitter> overall(String position) {
         List<Hitter> out = new ArrayList<>();
         Team a = getTeam("A");
-        if (position!= null && a.isHitterPositionAvailable(position)) {
+        if (position != null && a.isHitterPositionAvailable(position)) {
             for (int i = 0; i < hitters.size(); i++) {
                 if (hitters.get(i).getPosition().equals(position)) {
                     out.add(hitters.get(i));
@@ -100,12 +100,12 @@ public class League {
         }
     }
 
-    public List<Pitcher> pOverall(){
+    public List<Pitcher> pOverall() {
         List<Pitcher> out = new ArrayList<>();
-        if(getTeam("A").isPitcherAvailable()){
+        if (getTeam("A").isPitcherAvailable()) {
             out.addAll(pitchers);
             return out;
-        }else{
+        } else {
             return out;
         }
     }
