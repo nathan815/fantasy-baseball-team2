@@ -1,3 +1,5 @@
+import java.io.*;
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -53,13 +55,30 @@ public class Driver {
 			case "OVERALL": {
 				if(userInput.length > 1) {
 					position = userInput[1];
-					System.out.println(request + position);
+                    List<Hitter> ranked = league.overall(position);
+                    if(ranked.size() == 0){
+                        System.out.println("Position already drafted.");
+                    }else {
+                        printHitters(ranked);
+                    }
+                }else{
+					List<Hitter> ranked = league.overall(null);
+					if(ranked.size() == 0){
+						System.out.println("No positions available to draft.");
+					}else {
+						printHitters(ranked);
+					}
 				}
 				break;
 			}
 
 			case "POVERALL": {
-				System.out.println(request);
+				List<Pitcher> ranked = league.pOverall();
+				if(ranked.size() == 0){
+					System.out.println("Max pitchers already drafted");
+				}else{
+					printPitchers(ranked);
+				}
 				break;
 			}
 
@@ -153,7 +172,28 @@ public class Driver {
 	// method will return user input as an array of strings
 	public static String[] userSplit(String str) {
 		String[] userArray = str.split("\\s+");
-		return userArray;
+
+		if(userArray[0].equals("ODRAFT")) {
+			String[] arr = str.split("\"");
+
+			String req = arr[0].replaceAll("\\s+", "");
+			arr[0]=req;
+
+			String name = arr[2].replaceAll("\\s+", "");
+			arr[2]=name;
+
+			return arr;
+		}
+		else if(userArray[0].equals("IDRAFT")){
+			String[] arr = str.split("\"");
+
+			String req = arr[0].replaceAll("\\s+", "");
+			arr[0]=req;
+
+			return arr;
+		}
+		else
+			return userArray;
 	}
 
 	// method will return the order/request
@@ -172,7 +212,23 @@ public class Driver {
 
 	public static void menu() {
 		System.out.println("\nMenu:\n-ODRAFT\n-IDRAFT\n-OVERALL\n-POVERALL\n-TEAM\n-STARS\n-SAVE\n-QUIT"
-				+ "\n-RESTOR\n-EVALFUN\n-PEVALFUN\n");
+				+ "\n-RESTORE\n-EVALFUN\n-PEVALFUN\n");
+	}
+
+	private static void printHitters(List<Hitter> hitters){
+		for (int i = 0; i < hitters.size(); i++) {
+			Hitter player = hitters.get(i);
+			//TODO: Change to getValuation when available
+			System.out.println(player.getFirstName() + " " + player.getLastName() + " " + player.getPlayerTeam() + " " + 0.0);
+		}
+	}
+
+	private static void printPitchers(List<Pitcher> pitchers){
+		for (int i = 0; i < pitchers.size(); i++) {
+			Pitcher player = pitchers.get(i);
+			//TODO: Change to getValuation when available
+			System.out.println(player.getFirstName() + " " + player.getLastName() + " " + player.getPlayerTeam() + " " + 0.0);
+		}
 	}
 
 	private static String getExpressionFromUserInput(String[] userInput) {
