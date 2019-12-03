@@ -15,7 +15,7 @@ public class ExpressionEvaluatorTest {
 
     @Before
     public void beforeEach() {
-        hitter = new Hitter("John", "Doe", "team1", "SS", 0.5, 5, 10, 0);
+        hitter = new Hitter("John", "Doe", "team1", "SS", 0.5, 5, 10, 20);
         pitcher = new Pitcher("Some", "One", "team2", 0.5, 25, 100, 0);
     }
 
@@ -57,13 +57,27 @@ public class ExpressionEvaluatorTest {
     @Test
     public void evaluate_SimpleAllMinusExpr_ShouldReturnCorrectValue() throws ExpressionEvaluationException {
         double expectedOutput = hitter.getAvg() - hitter.getHits() - hitter.getRuns();
-        // Expression: 'AVG - H - R' (avg - hits - runs)
+        // Expression: 'AVG - H - R'
         Expression expr = new Expression(Arrays.asList(
                 ExpressionToken.operand("AVG"),
                 ExpressionToken.operator("-"),
                 ExpressionToken.operand("H"),
                 ExpressionToken.operator("-"),
                 ExpressionToken.operand("R")
+        ));
+        assertEquals(expectedOutput, new ExpressionEvaluator(expr).evaluate(hitter), 0.0);
+    }
+
+    @Test
+    public void evaluate_SimpleAllDivisionExpr_ShouldReturnCorrectValue() throws ExpressionEvaluationException {
+        double expectedOutput = (double)hitter.getHits() / hitter.getRuns() / hitter.getRunBattedIns();
+        // Expression: 'H / R / RBI'
+        Expression expr = new Expression(Arrays.asList(
+                ExpressionToken.operand("H"),
+                ExpressionToken.operator("/"),
+                ExpressionToken.operand("R"),
+                ExpressionToken.operator("/"),
+                ExpressionToken.operand("RBI")
         ));
         assertEquals(expectedOutput, new ExpressionEvaluator(expr).evaluate(hitter), 0.0);
     }
