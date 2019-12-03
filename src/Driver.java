@@ -1,6 +1,14 @@
-import java.io.*;
-import java.util.Collection;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
+
+import static java.util.stream.Collectors.joining;
 
 public class Driver {
 
@@ -9,7 +17,7 @@ public class Driver {
 
 		menu();
 
-		System.out.println("Enter your order: ");
+		System.out.println("Enter your command: ");
 		String user = input.nextLine();
 		League league = new League();
 
@@ -18,9 +26,9 @@ public class Driver {
 			String[] userInput = userSplit(user);
 
 			// Verify user request
-			String request = order(userInput[0]);
+			String request = order(userInput[0].toUpperCase());
 
-			String playerName, teamName = "", position, file, expression;
+			String playerName, teamName = "", position, file;
 
 			switch (request) {
 				case "ODRAFT":
@@ -87,7 +95,7 @@ public class Driver {
 				break;
 			}
 
-			case "RESTORE": {
+				case "RESTORE":
 				file = userInput[1];
 				String restoreFileName = file + ".fantasy.txt";
 				try (BufferedReader br = new BufferedReader(new FileReader(restoreFileName))) {
@@ -104,30 +112,40 @@ public class Driver {
 							restoreFileName + ": " + e.getMessage());
 				}
 				break;
-			}
 
-			case "EVALFUN": {
-				expression = userInput[1];
-				System.out.println(request + expression);
-				break;
-			}
-
-			case "PEVALFUN": {
-				expression = userInput[1];
-				System.out.println(request + expression);
-				break;
-			}
+				case "EVALFUN":
+				case "PEVALFUN":
+					if(userInput.length > 1) {
+						String expressionStr = getExpressionFromUserInput(userInput);
+						// EVALFUN is for hitters, PEVALFUN is for pitchers
+						List<? extends Player> players = request.equals("EVALFUN") ? league.getHitters() : league.getPitchers();
+						Expression expression = new Expression(ExpressionTokenizer.tokenize(expressionStr));
+						ExpressionEvaluator evaluator = new ExpressionEvaluator(expression);
+						try {
+							for(Player player : players) {
+								double valuation = evaluator.evaluate(player);
+								player.setValuation(valuation);
+							}
+							Collections.sort(players);
+							players.forEach(p -> System.out.println(p.getFirstName() + " " + p.getLastName() + ": " + p.getValuation()));
+						} catch (ExpressionEvaluationException e) {
+							System.out.println("Evaluation Error: " + e.getMessage());
+						}
+					} else {
+						System.out.println("Error: must provide expression!");
+					}
+					break;
 
 			default:
-				System.out.println("Invalid Input");
+				System.out.println("Invalid command");
 
 			}
 
 			menu();
 
-			System.out.println("Enter your order: ");
+			System.out.println("\nEnter your command: ");
 			user = input.nextLine();
-
+			System.out.println();
 		}
 
 		System.out.println("Program is terminated.");
@@ -154,9 +172,11 @@ public class Driver {
 	}
 
 	public static void menu() {
-		System.out.println("-ODRAFT\n-IDRAFT\n-OVERALL\n-POVERALL\n-TEAM\n-STARS\n-SAVE\n-QUIT"
+		System.out.println("\nMenu:\n-ODRAFT\n-IDRAFT\n-OVERALL\n-POVERALL\n-TEAM\n-STARS\n-SAVE\n-QUIT"
 				+ "\n-RESTOR\n-EVALFUN\n-PEVALFUN\n");
 	}
 
-
+	private static String getExpressionFromUserInput(String[] userInput) {
+		return Arrays.stream(userInput).skip(1).collect(joining(""));
+	}
 }

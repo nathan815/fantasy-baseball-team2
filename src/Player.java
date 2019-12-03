@@ -1,7 +1,8 @@
 import java.util.Map;
 
-public abstract class Player {
+public abstract class Player implements Comparable<Player> {
     private String firstName, lastName, playerTeam;
+    private double valuation;
     private boolean isDrafted = false;
 
     public Player(String firstName, String lastName, String team) {
@@ -31,4 +32,17 @@ public abstract class Player {
     }
 
     public abstract Map<String, Double> getStatValuesMap();
+
+    public double getValuation() {
+        return valuation;
+    }
+
+    public void setValuation(double valuation) {
+        this.valuation = valuation;
+    }
+
+    @Override
+    public int compareTo(Player other) {
+        return Double.compare(other.valuation, valuation);
+    }
 }

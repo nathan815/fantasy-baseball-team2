@@ -14,10 +14,10 @@ public class ExpressionOperators {
         return OPERATORS_SET.contains(c);
     }
 
-    // Returns true if op2's precedence is higher than op1
-    public static boolean hasPrecedence(char op1, char op2) {
+    // Returns true if op2's precedence is higher than or equal to op1
+    public static boolean hasGreaterOrEqualPrecedence(char op1, char op2) {
         int op1Index = OPERATORS.indexOf(op1);
         int op2Index = OPERATORS.indexOf(op2);
-        return OPERATOR_PRECEDENCE.get(op2Index) > OPERATOR_PRECEDENCE.get(op1Index);
+        return OPERATOR_PRECEDENCE.get(op2Index) >= OPERATOR_PRECEDENCE.get(op1Index);
     }
 }
