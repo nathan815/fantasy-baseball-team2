@@ -75,42 +75,41 @@ public class Driver {
 				break;
 			}
 
-			case "SAVE": {
-				file = userInput[1];
-				String saveFileName = file + ".fantasy.txt";
-				try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFileName, false))) {
-					for (Team team : league.getTeams()){
-						writer.write("-" + team.getName() );
-						writer.newLine();
-						for(Player player: team.getPlayers()) {
-							writer.write(player.getLastName() + "," + player.getFirstName());
+				case "SAVE":
+					file = userInput[1];
+					String saveFileName = file + ".fantasy.txt";
+					try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFileName, false))) {
+						for (Team team : league.getTeams()){
+							writer.write("-" + team.getName() );
 							writer.newLine();
+							for(Player player: team.getPlayers()) {
+								writer.write(player.getLastName() + "," + player.getFirstName());
+								writer.newLine();
+							}
 						}
+						System.out.println("The state of the system has been saved to " + saveFileName);
+					} catch (IOException e) {
+						System.out.println("Unable to save the state of the system to a file named " +
+								saveFileName + ": " + e.getMessage());
 					}
-					System.out.println("The state of the system has been saved to " + saveFileName);
-				} catch (IOException e) {
-					System.out.println("Unable to save the state of the system to a file named " +
-							saveFileName + ": " + e.getMessage());
-				}
-				break;
-			}
+					break;
 
 				case "RESTORE":
-				file = userInput[1];
-				String restoreFileName = file + ".fantasy.txt";
-				try (BufferedReader br = new BufferedReader(new FileReader(restoreFileName))) {
-					String line;
-					while((line = br.readLine()) != null){
-						if(line.charAt(0) == '-')
-							teamName = line.substring(1);
-						else
-							league.draftPlayerToTeam(line, teamName);
+					file = userInput[1];
+					String restoreFileName = file + ".fantasy.txt";
+					try (BufferedReader br = new BufferedReader(new FileReader(restoreFileName))) {
+						String line;
+						while((line = br.readLine()) != null){
+							if(line.charAt(0) == '-')
+								teamName = line.substring(1);
+							else
+								league.draftPlayerToTeam(line, teamName);
+						}
+						System.out.println("The state of the system has been restored from " + restoreFileName);
+					} catch (IOException | PlayerDraftException e) {
+						System.out.println("Unable to restore the state of the system from a file named " +
+								restoreFileName + ": " + e.getMessage());
 					}
-					System.out.println("The state of the system has been restored from " + restoreFileName);
-				} catch (IOException | PlayerDraftException e) {
-					System.out.println("Unable to restore the state of the system from a file named " +
-							restoreFileName + ": " + e.getMessage());
-				}
 				break;
 
 				case "EVALFUN":
