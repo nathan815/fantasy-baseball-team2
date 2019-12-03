@@ -175,7 +175,7 @@ public class Driver {
     public static String[] userSplit(String str) {
         String[] userArray = str.split("\\s+");
 
-        if (userArray[0].equals("ODRAFT")) {
+        if (userArray[0].toUpperCase().equals("ODRAFT")) {
             String[] arr = str.split("\"");
 
             String req = arr[0].replaceAll("\\s+", "");
@@ -185,7 +185,7 @@ public class Driver {
             arr[2] = name;
 
             return arr;
-        } else if (userArray[0].equals("IDRAFT")) {
+        } else if (userArray[0].toUpperCase().equals("IDRAFT")) {
             String[] arr = str.split("\"");
 
             String req = arr[0].replaceAll("\\s+", "");
@@ -201,7 +201,7 @@ public class Driver {
         String[] orders = {"ODRAFT", "IDRAFT", "OVERALL", "POVERALL", "TEAM", "STARS", "SAVE", "QUIT", "RESTORE",
                 "EVALFUN", "PEVALFUN"};
         for (int i = 0; i < orders.length; i++) {
-            if (userInput.equals(orders[i]))
+            if (userInput.equals(orders[i].toUpperCase()))
                 return orders[i];
         }
         return "";
