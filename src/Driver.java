@@ -167,7 +167,7 @@ public class Driver {
 
 			menu();
 
-			System.out.println("\nEnter your command: ");
+			System.out.println("Enter your command: ");
 			user = input.nextLine();
 			System.out.println();
 		}
