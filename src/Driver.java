@@ -237,7 +237,7 @@ public class Driver {
 	private static void printPitchers(List<Pitcher> pitchers, Expression pitcherExpression) {
 		printPlayerHeader(pitcherExpression == null ? Pitcher.INITIAL_STAT : pitcherExpression.toString());
 		for(Pitcher p : pitchers) {
-			System.out.printf(PLAYER_PRINT_FORMAT, p.getNameLastCommaFirst(), p.getPlayerTeam(), "P", p.getValuation());
+			System.out.printf(PLAYER_PRINT_FORMAT, p.getNameLastCommaFirst(), p.getPlayerTeam(), p.getPosition(), p.getValuation());
 		}
 	}
 

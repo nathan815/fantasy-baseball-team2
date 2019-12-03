@@ -18,6 +18,11 @@ public class Pitcher extends Player {
     }
 
     @Override
+    public String getPosition() {
+        return "P";
+    }
+
+    @Override
     public Map<String, Double> getStatValuesMap() {
         Map<String, Double> values = new HashMap<>();
         values.put("ERA", earnedRunAverage);
