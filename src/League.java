@@ -1,14 +1,18 @@
 import com.google.gson.stream.JsonReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 public class League {
@@ -27,6 +31,8 @@ public class League {
         }
         makeHitters();
         makePitchers();
+        Collections.sort(hitters);
+        Collections.sort(pitchers);
     }
 
     public List<Team> getTeams() {
@@ -39,28 +45,30 @@ public class League {
 
     public void draftPlayerToTeam(String playerName, String teamName) throws PlayerDraftException {
         List<Player> players = findPlayerByName(playerName);
-        if(players.isEmpty()) {
+        if (players.isEmpty()) {
             throw new PlayerDraftException("Player " + playerName + " not found");
-        } else if(players.size() > 1) {
-            throw new PlayerDraftException("More than one player found for name " +
-                    playerName + ". Please provide full name in form Last,First (or first initial)");
+        } else if (players.size() > 1) {
+            throw new PlayerDraftException("Multiple players with name '" + playerName + "'. " +
+                    "Please provide full name in form Last, First (or first initial).\n" +
+                    "Players found: \n" +
+                    players.stream().map(Player::getNameLastCommaFirst).collect(joining("\n")));
         }
         Player player = players.get(0);
-        if(player.isDrafted()) {
+        if (player.isDrafted()) {
             throw new PlayerDraftException("Player is already drafted!");
         }
         Team team = getTeam(teamName);
-        if(team == null) {
+        if (team == null) {
             throw new PlayerDraftException("Invalid team name " + teamName);
         }
-        if(player instanceof Hitter) {
+        if (player instanceof Hitter) {
             boolean drafted = team.draftHitter((Hitter) player);
-            if(!drafted) {
+            if (!drafted) {
                 throw new PlayerDraftException("Unable to draft hitter " + playerName);
             }
-        } else if(player instanceof Pitcher) {
+        } else if (player instanceof Pitcher) {
             boolean drafted = team.draftPitcher((Pitcher) player);
-            if(!drafted) {
+            if (!drafted) {
                 throw new PlayerDraftException("Unable to draft pitcher " + playerName);
             }
         } else {
@@ -73,6 +81,37 @@ public class League {
         String lastName = nameParts[0].trim();
         String firstName = nameParts.length >= 2 ? nameParts[1].trim() : "";
         return findPlayerByLastAndFirstName(lastName, firstName);
+    }
+
+    public List<Hitter> overall(String position) {
+        List<Hitter> out = new ArrayList<>();
+        Team a = getTeam("A");
+        if (position != null && a.isHitterPositionAvailable(position)) {
+            for (int i = 0; i < hitters.size(); i++) {
+                if (hitters.get(i).getPosition().equals(position)) {
+                    out.add(hitters.get(i));
+                }
+            }
+            return out;
+        } else if (position == null) {
+            for (Hitter hitter : hitters) {
+                if (a.isHitterPositionAvailable(hitter.getPosition()))
+                    out.add(hitter);
+            }
+            return out;
+        } else {
+            return out;
+        }
+    }
+
+    public List<Pitcher> pOverall() {
+        List<Pitcher> out = new ArrayList<>();
+        if (getTeam("A").isPitcherAvailable()) {
+            out.addAll(pitchers);
+            return out;
+        } else {
+            return out;
+        }
     }
 
     private List<Player> findPlayerByLastAndFirstName(String lastName, String firstName) {
@@ -224,6 +263,7 @@ public class League {
     public List<Hitter> getHitters() {
         return hitters;
     }
+
     public List<Pitcher> getPitchers() {
         return pitchers;
     }

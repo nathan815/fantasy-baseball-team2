@@ -60,17 +60,21 @@ public class Team {
     }
 
     // Returns true if a given hitter's position is available, false otherwise
-    private boolean isHitterPositionAvailable(Hitter otherHitter) {
-        for(Hitter hitter : getHitters()) {
-            if(hitter.getPosition().equals(otherHitter.getPosition())) {
+    public boolean isHitterPositionAvailable(String position) {
+        for (Hitter hitter : getHitters()) {
+            if (hitter.getPosition().equals(position)) {
                 return false;
             }
         }
         return true;
     }
 
+    public boolean isPitcherAvailable() {
+        return getPitchers().size() < NUM_PITCHERS;
+    }
+
     private boolean canDraftHitter(Hitter hitter) {
-        return !hitter.isDrafted() && getHitters().size() < NUM_HITTERS && isHitterPositionAvailable(hitter);
+        return !hitter.isDrafted() && getHitters().size() < NUM_HITTERS && isHitterPositionAvailable(hitter.getPosition());
     }
 
     private boolean canDraftPitcher(Pitcher pitcher) {
