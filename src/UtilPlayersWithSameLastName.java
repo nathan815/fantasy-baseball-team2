@@ -14,7 +14,7 @@ public class UtilPlayersWithSameLastName {
                 .collect(toList());
 
         Map<String, Integer> lastNameFrequency = new HashMap<>();
-        for(Player p : allPlayers) {
+        for (Player p : allPlayers) {
             lastNameFrequency.put(p.getLastName(), lastNameFrequency.getOrDefault(p.getLastName(), 0) + 1);
         }
 

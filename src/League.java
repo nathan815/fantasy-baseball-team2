@@ -9,8 +9,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 public class League {
@@ -46,8 +48,10 @@ public class League {
         if (players.isEmpty()) {
             throw new PlayerDraftException("Player " + playerName + " not found");
         } else if (players.size() > 1) {
-            throw new PlayerDraftException("More than one player found for name " +
-                    playerName + ". Please provide full name in form Last,First (or first initial)");
+            throw new PlayerDraftException("Multiple players with name '" + playerName + "'. " +
+                    "Please provide full name in form Last, First (or first initial).\n" +
+                    "Players found: \n" +
+                    players.stream().map(Player::getNameLastCommaFirst).collect(joining("\n")));
         }
         Player player = players.get(0);
         if (player.isDrafted()) {
@@ -82,7 +86,7 @@ public class League {
     public List<Hitter> overall(String position) {
         List<Hitter> out = new ArrayList<>();
         Team a = getTeam("A");
-        if (position!= null && a.isHitterPositionAvailable(position)) {
+        if (position != null && a.isHitterPositionAvailable(position)) {
             for (int i = 0; i < hitters.size(); i++) {
                 if (hitters.get(i).getPosition().equals(position)) {
                     out.add(hitters.get(i));
@@ -100,12 +104,12 @@ public class League {
         }
     }
 
-    public List<Pitcher> pOverall(){
+    public List<Pitcher> pOverall() {
         List<Pitcher> out = new ArrayList<>();
-        if(getTeam("A").isPitcherAvailable()){
+        if (getTeam("A").isPitcherAvailable()) {
             out.addAll(pitchers);
             return out;
-        }else{
+        } else {
             return out;
         }
     }

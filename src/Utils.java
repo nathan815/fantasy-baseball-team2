@@ -3,7 +3,7 @@ public class Utils {
         try {
             Double.parseDouble(value);
             return true;
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return false;
         }
     }

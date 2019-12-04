@@ -14,7 +14,7 @@ public abstract class Player implements Comparable<Player> {
 
     public abstract String getPosition();
 
-    public String getPlayerTeam(){
+    public String getPlayerTeam() {
         return playerTeam;
     }
 
