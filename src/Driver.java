@@ -65,7 +65,10 @@ public class Driver {
 				teamName = userInput[1];
 				System.out.println(request + teamName);
 				Team team = league.getTeams();
-				System.out.println(team);
+				Player position = player.getPosition();
+				Player lastName = player.getLastName();
+				Player firstName = player.getFirstName();
+				System.out.println(position + " " + lastName + ", " + firstName);
 				break;
 			}
 
