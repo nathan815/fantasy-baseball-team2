@@ -61,16 +61,15 @@ public class Driver {
 				break;
 			}
 
-			case "STARS": {
-			        teamName = userInput[1];
-                   		System.out.println(request + teamName);
-                    		Team team = league.getTeam(teamName);
-    				for(Player player: team.getPlayers())
-    				{
-    					System.out.println(player.getPosition() + " " + player.getNameLastCommaFirst());
-    				}
-                    		break;
-			}
+                case "STARS":
+                    teamName = userInput[1];
+                    System.out.println(request + teamName);
+                    Team t = league.getTeam(teamName);
+                    for (Player player : t.getPlayers())
+                    {
+                        System.out.println(player.getPosition() + " " + player.getLastName() + ", " + player.getFirstName());
+                    }
+                    break;
 
 			case "SAVE": {
 				file = userInput[1];
