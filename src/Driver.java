@@ -62,15 +62,12 @@ public class Driver {
 			}
 
 			case "STARS": {
-				teamName = userInput[1];
+			        teamName = userInput[1];
                    		System.out.println(request + teamName);
-                    		Team team = league.getTeams();
-    				String position = team.getPosition();
-    				String lastName = team.getLastName();
-    				String firstName = team.getFirstName();
-    				for(String player: team.getPlayers())
+                    		Team team = league.getTeam(teamName);
+    				for(Player player: team.getPlayers())
     				{
-    					System.out.println(player.getPosition() + " " + player.getLastName() + ", " + player.getFirstName());
+    					System.out.println(player.getPosition() + " " + player.getNameLastCommaFirst());
     				}
                     		break;
 			}
