@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Hitter extends Player {
     public static final String INITIAL_STAT = "AVG";
-    public static final List<String> POSITIONS = Arrays.asList("C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "P1", "P2", "P3", "P4", "P5");
+    public static final List<String> POSITIONS = Arrays.asList("C", "1B", "2B", "3B", "SS", "LF", "CF", "RF");
 
     private String position;
     private double avg;
