@@ -29,6 +29,7 @@ public class Hitter extends Player {
         return values;
     }
 
+    @Override
     public String getPosition() {
         return position;
     }
