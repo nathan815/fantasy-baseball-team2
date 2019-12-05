@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -82,17 +83,40 @@ public class Driver {
                     break;
 
                 case "TEAM":
-                    teamName = userInput[1];
-                    System.out.println(request + teamName);
+                    if (userInput.length>1) {
+                        teamName = userInput[1];
+                        Team t1 = league.getTeam(teamName);
+                        for (String pos:Hitter.POSITIONS){
+                            for (Hitter hitter:t1.getHitters()){
+                                if(pos.equals(hitter.getPosition())){
+                                    System.out.println(pos + " " + hitter.getLastName() + ", " + hitter.getFirstName());
+
+                                }
+                                else{
+                                    System.out.print("");
+                                }
+                            }
+                        }
+                        for (Pitcher pitcher : t1.getPitchers()){
+                            System.out.println("P " + pitcher.getLastName() + ", " + pitcher.getFirstName());
+                        }
+                    }
+                    else {
+                        System.out.println("Invalid input");
+                    }
                     break;
 
                 case "STARS":
-                    teamName = userInput[1];
-                    System.out.println(request + teamName);
-                    Team t = league.getTeam(teamName);
-                    for (Player player : t.getPlayers())
-                    {
-                        System.out.println(player.getPosition() + " " + player.getLastName() + ", " + player.getFirstName());
+                    if (userInput.length>1) {
+                        teamName = userInput[1];
+                        Team t = league.getTeam(teamName);
+                        for (Player player : t.getPlayers()) {
+                            System.out.println(player.getPosition() + " " + player.getLastName() + ", " + player.getFirstName());
+                        }
+                    }
+
+                    else {
+                        System.out.println("Invalid entry");
                     }
                     break;
 
