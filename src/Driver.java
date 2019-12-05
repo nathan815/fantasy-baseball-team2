@@ -55,8 +55,10 @@ public class Driver {
                     if (userInput.length > 1) {
                         position = userInput[1];
                         List<Hitter> ranked = league.overall(position);
-                        if (ranked.size() == 0) {
-                            System.out.println("Position already drafted.");
+                        if(!Hitter.POSITIONS.contains(position)) {
+                            System.out.println("Invalid position.");
+                        } else if (ranked.size() == 0) {
+                            System.out.println("Position already drafted to your team.");
                         } else {
                             printHitters(ranked, currentHitterExpression);
                         }

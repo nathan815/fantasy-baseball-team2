@@ -1,8 +1,11 @@
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Hitter extends Player {
     public static final String INITIAL_STAT = "AVG";
+    public static final List<String> POSITIONS = Arrays.asList("C", "1B", "2B", "3B", "SS", "LF", "CF", "RF");
 
     private String position;
     private double avg;
