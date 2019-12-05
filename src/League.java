@@ -43,7 +43,7 @@ public class League {
         return teamsMap.getOrDefault(name, null);
     }
 
-    public void draftPlayerToTeam(String playerName, String teamName) throws PlayerDraftException {
+    public Player draftPlayerToTeam(String playerName, String teamName) throws PlayerDraftException {
         List<Player> players = findPlayerByName(playerName);
         if (players.isEmpty()) {
             throw new PlayerDraftException("Player " + playerName + " not found");
@@ -74,6 +74,7 @@ public class League {
         } else {
             throw new PlayerDraftException("Invalid player");
         }
+        return player;
     }
 
     public List<Player> findPlayerByName(String playerName) {

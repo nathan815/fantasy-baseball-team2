@@ -15,17 +15,19 @@ public class Driver {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-
-        menu();
-
-        System.out.println("Enter your command: ");
-        String user = input.nextLine();
         League league = new League();
         Expression currentHitterExpression = null, currentPitcherExpression = null;
+        boolean run = true;
 
-        while (!(user.contentEquals("QUIT"))) {
+        while (run) {
+            menu();
+
+            System.out.println("Enter your command: ");
+            String userInputStr = input.nextLine();
+            System.out.println();
+
             // split user input
-            String[] userInput = userSplit(user);
+            String[] userInput = userSplit(userInputStr);
 
             // Verify user request
             String request = order(userInput[0].toUpperCase());
@@ -36,16 +38,16 @@ public class Driver {
                 case "ODRAFT":
                 case "IDRAFT":
                     if (userInput.length <= 1) {
-                        System.out.println("Error: Must provide player last name. " +
-                                "If ambiguous last name, also provide first name/first initial in format: Last, First OR Last, F");
+                        System.out.println("Error: Must provide player name in format: Last OR Last, F OR Last, First");
                     } else if (request.equals("ODRAFT") && userInput.length < 3) {
                         System.out.println("Error: Must provide league member name");
                     } else {
                         playerName = userInput[1];
                         teamName = request.equals("IDRAFT") ? "A" : userInput[2];
                         try {
-                            league.draftPlayerToTeam(playerName, teamName);
-                            System.out.println("Successfully Drafted.");
+                            Player draftedPlayer = league.draftPlayerToTeam(playerName, teamName);
+                            System.out.println("Successfully drafted player " + draftedPlayer.getFullName() +
+                                    " (" + draftedPlayer.getPosition() + ")");
                         } catch (PlayerDraftException e) {
                             System.out.println("Error: " + e.getMessage());
                         }
@@ -122,39 +124,12 @@ public class Driver {
 
                 case "SAVE":
                     file = userInput[1];
-                    String saveFileName = file + ".fantasy.txt";
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFileName, false))) {
-                        for (Team team : league.getTeams()) {
-                            writer.write("-" + team.getName());
-                            writer.newLine();
-                            for (Player player : team.getPlayers()) {
-                                writer.write(player.getLastName() + "," + player.getFirstName());
-                                writer.newLine();
-                            }
-                        }
-                        System.out.println("The state of the system has been saved to " + saveFileName);
-                    } catch (IOException e) {
-                        System.out.println("Unable to save the state of the system to a file named " +
-                                saveFileName + ": " + e.getMessage());
-                    }
+                    saveState(file, league);
                     break;
 
                 case "RESTORE":
                     file = userInput[1];
-                    String restoreFileName = file + ".fantasy.txt";
-                    try (BufferedReader br = new BufferedReader(new FileReader(restoreFileName))) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            if (line.charAt(0) == '-')
-                                teamName = line.substring(1);
-                            else
-                                league.draftPlayerToTeam(line, teamName);
-                        }
-                        System.out.println("The state of the system has been restored from " + restoreFileName);
-                    } catch (IOException | PlayerDraftException e) {
-                        System.out.println("Unable to restore the state of the system from a file named " +
-                                restoreFileName + ": " + e.getMessage());
-                    }
+                    restoreState(file, league);
                     break;
 
                 case "EVALFUN":
@@ -187,16 +162,19 @@ public class Driver {
                     }
                     break;
 
+                case "QUIT":
+                    run = false;
+                    System.out.print("Do you want to save the current draft before quitting? (Y/N): ");
+                    if(input.next().equalsIgnoreCase("Y")) {
+                        System.out.print("Enter file name: ");
+                        String fileName = input.next();
+                        saveState(fileName, league);
+                    }
+                    break;
                 default:
                     System.out.println("Invalid command");
 
             }
-
-            menu();
-
-            System.out.println("Enter your command: ");
-            user = input.nextLine();
-            System.out.println();
         }
 
         System.out.println("Program is terminated.");
@@ -265,5 +243,41 @@ public class Driver {
 
     private static String getExpressionFromUserInput(String[] userInput) {
         return Arrays.stream(userInput).skip(1).collect(joining(""));
+    }
+
+    private static void saveState(String fileName, League league) {
+        String saveFileName = fileName + ".fantasy.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFileName, false))) {
+            for (Team team : league.getTeams()) {
+                writer.write("-" + team.getName());
+                writer.newLine();
+                for (Player player : team.getPlayers()) {
+                    writer.write(player.getLastName() + "," + player.getFirstName());
+                    writer.newLine();
+                }
+            }
+            System.out.println("The state of the system has been saved to " + saveFileName);
+        } catch (IOException e) {
+            System.out.println("Unable to save the state of the system to a file named " +
+                    saveFileName + ": " + e.getMessage());
+        }
+    }
+
+    private static void restoreState(String fileName, League league) {
+        String restoreFileName = fileName + ".fantasy.txt";
+        String teamName = null;
+        try (BufferedReader br = new BufferedReader(new FileReader(restoreFileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.charAt(0) == '-')
+                    teamName = line.substring(1);
+                else
+                    league.draftPlayerToTeam(line, teamName);
+            }
+            System.out.println("The state of the system has been restored from " + restoreFileName);
+        } catch (IOException | PlayerDraftException e) {
+            System.out.println("Unable to restore the state of the system from a file named " +
+                    restoreFileName + ": " + e.getMessage());
+        }
     }
 }
