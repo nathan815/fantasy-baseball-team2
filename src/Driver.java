@@ -89,6 +89,11 @@ public class Driver {
                 case "STARS":
                     teamName = userInput[1];
                     System.out.println(request + teamName);
+                    Team t = league.getTeam(teamName);
+                    for (Player player : t.getPlayers())
+                    {
+                        System.out.println(player.getPosition() + " " + player.getLastName() + ", " + player.getFirstName());
+                    }
                     break;
 
                 case "SAVE":
